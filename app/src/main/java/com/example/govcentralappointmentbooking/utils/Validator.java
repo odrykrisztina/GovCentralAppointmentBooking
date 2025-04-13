@@ -25,11 +25,8 @@ public class Validator {
 
     public static boolean isValidUsername(String userName) {
         if (userName == null) return false;
-        if (userName.length() < 3 || userName.length() > 20) return false;
-        if (!userName.matches("^[a-zA-Z0-9._]+$")) return false;
-        return  !userName.startsWith(".")   && !userName.startsWith("_") &&
-                !userName.endsWith(".")     && !userName.endsWith("_") &&
-                !userName.contains("..")    && !userName.contains("__") &&
-                !userName.contains("._")    && !userName.contains("_.");
+        userName = userName.trim();
+        if (userName.length() < 3 || userName.length() > 100) return false;
+        return userName.matches("^[\\p{L} .'-]+$");
     }
 }

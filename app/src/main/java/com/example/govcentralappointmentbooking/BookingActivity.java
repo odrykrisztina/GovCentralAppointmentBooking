@@ -20,11 +20,12 @@ import com.example.govcentralappointmentbooking.utils.Util;
 import java.util.ArrayList;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Date;
-import java.util.TimeZone;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.Timestamp;
 
 public class BookingActivity extends AppCompatActivity {
 
@@ -262,8 +263,9 @@ public class BookingActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle("Kilépés")
                 .setMessage("Biztosan ki szeretnél lépni?")
+                .setIcon(R.drawable.question_mark_blue_24)
                 .setPositiveButton("Igen", (dialog, which) -> {
-                    Util.userId = 0;
+                    Util.userUid = null;
                     Util.startActivityWithAnimation(this, MainActivity.class);
                 })
                 .setNegativeButton("Mégse", null)
@@ -273,6 +275,7 @@ public class BookingActivity extends AppCompatActivity {
     public void confirmSave(View view) {
         new AlertDialog.Builder(this)
                 .setTitle("Időpont foglalás")
+                .setIcon(R.drawable.question_mark_blue_24)
                 .setMessage("Biztosan lefoglalod az időpontot?" +
                             "\nKormányablak:\n" + officeSelectedName +
                             "\nSzolgáltatás:\n" + serviceSelectedName +
@@ -285,23 +288,32 @@ public class BookingActivity extends AppCompatActivity {
 
     private void bookingSave() {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        sdf.setTimeZone(TimeZone.getTimeZone("Europe/Budapest"));
-        String bookingTime = sdf.format(new Date());
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        Log.i(LOG_TAG,
-                "\nFelhasználó azonosító: " + Util.userId +
-                        "\nKormányablak: " + officeSelectedKey +
-                        "\nSzolgáltatás: " + serviceSelectedKey +
-                        "\nDátum: " + dateSelected +
-                        "\nIdőpont: " + Util.timeSelected +
-                        "\nFoglalás időpontja: " + bookingTime);
+        Map<String, Object> booking = new HashMap<>();
+        booking.put("userUid", Util.userUid);
+        booking.put("officeKey", officeSelectedKey);
+        booking.put("serviceKey", serviceSelectedKey);
+        booking.put("date", dateSelected);
+        booking.put("time", Util.timeSelected);
+        booking.put("createdAt", Timestamp.now());
 
-        // Todo: Create booking record.
-        //       When not success show error.
-        //       Otherwise refresh booking time.
+        db.collection("bookings")
+                .add(booking)
+                .addOnSuccessListener(documentReference -> {
+                    Log.i(LOG_TAG, "Foglalás elmentve Firestore-ba: " + documentReference.getId());
 
-        getSupportFragmentManager()
-                .popBackStack();
+                    // Visszalépünk, újra betöltheti a foglalásokat, stb.
+                    getSupportFragmentManager().popBackStack();
+                    Toast.makeText(this,
+                            "Foglalás sikeres!",
+                            Toast.LENGTH_LONG).show();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(LOG_TAG, "Hiba a foglalás mentésekor: ", e);
+                    Toast.makeText(this,
+                            "Foglalás sikertelen: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                });
     }
 }

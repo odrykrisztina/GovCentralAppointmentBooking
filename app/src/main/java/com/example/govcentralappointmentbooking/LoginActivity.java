@@ -2,11 +2,16 @@ package com.example.govcentralappointmentbooking;
 
 import com.example.govcentralappointmentbooking.utils.Util;
 import com.example.govcentralappointmentbooking.utils.Validator;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -77,24 +82,60 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        Log.i(LOG_TAG,"\nEmail cím: " + email +
-                            "\nJelszó: " + password);
+        FirebaseAuth.getInstance()
+                .signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        Util.userUid = user != null ? user.getUid() : null;
 
-        // Todo: Check user exist.
-        //       When exist get user identifier.
-        //       Otherwise shoe error.
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        db.collection("users")
+                                .document(Util.userUid)
+                                .get()
+                                .addOnSuccessListener(documentSnapshot -> {
 
-        Util.userId = 66;
-        Util.startActivityWithAnimation(this, BookingActivity.class);
+                                    if (documentSnapshot.exists()) {
+                                        String userName = documentSnapshot.getString("userName");
+
+                                        new AlertDialog.Builder(this)
+                                                .setTitle("Sikeres bejelentkezés")
+                                                .setIcon(R.drawable.check_circle_green_24)
+                                                .setMessage("Üdvözöllek, " + userName + "!")
+                                                .setPositiveButton("OK", (dialog, which) -> {
+                                                    Util.startActivityWithAnimation(this, BookingActivity.class);
+                                                })
+                                                .setCancelable(false)
+                                                .show();
+                                    } else {
+                                        Toast.makeText(this,
+                                                "Felhasználói adatok nem találhatók!",
+                                                Toast.LENGTH_LONG).show();
+                                    }
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(this,
+                                            "Hiba a Firestore lekérdezéskor: " + e.getMessage(),
+                                            Toast.LENGTH_LONG).show();
+                                });
+
+                    } else {
+                        Toast.makeText(this,
+                                "Hibás e-mail vagy jelszó!",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+
     }
 
     public void mainView(View view) {
-        Util.userId = 0;
+        Util.userUid = null;
         Util.startActivityWithAnimation(
                 this, MainActivity.class);
     }
 
     public void registerView(View view) {
-        Util.startActivityWithAnimation(this, RegisterActivity.class);
+        Util.startActivityWithAnimation(
+                this, RegisterActivity.class);
     }
 }

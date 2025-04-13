@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "628113594045",
+    "project_id": "govcentralappointmentboo-c0706",
+    "storage_bucket": "govcentralappointmentboo-c0706.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:628113594045:android:ff96652dc736ff44cf49d4",
+        "android_client_info": {
+          "package_name": "com.example.govcentralappointmentbooking"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnB6JXpGFmrXKUR81OP3hwUTOho2MoUPc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

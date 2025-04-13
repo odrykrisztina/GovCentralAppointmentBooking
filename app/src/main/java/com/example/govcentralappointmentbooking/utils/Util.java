@@ -7,7 +7,7 @@ import com.example.govcentralappointmentbooking.R;
 
 public class Util {
 
-    public static int userId = 0;
+    public static String userUid = null;
     public static String timeSelected = null;
 
     public static void startActivityWithAnimation(

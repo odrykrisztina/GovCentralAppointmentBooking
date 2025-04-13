@@ -2,11 +2,19 @@ package com.example.govcentralappointmentbooking;
 
 import com.example.govcentralappointmentbooking.utils.Util;
 import com.example.govcentralappointmentbooking.utils.Validator;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import java.util.Objects;
+import com.google.firebase.firestore.FirebaseFirestore;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -107,16 +115,51 @@ public class RegisterActivity extends AppCompatActivity {
                         "\nTelefon: " + phone +
                         "\nJelszó : " + password);
 
-        // Todo: Check user email exist.
-        //       When exist show error.
-        //       Otherwise add user, and get user identifier.
+        FirebaseAuth.getInstance()
+                .createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        Map<String, Object> userData = new HashMap<>();
+                        userData.put("userName", userName);
+                        userData.put("email", email);
+                        userData.put("phone", phone);
 
-        Util.userId = 66;
-        Util.startActivityWithAnimation(this, BookingActivity.class);
+                        db.collection("users")
+                                .document(Objects.requireNonNull(user).getUid())
+                                .set(userData)
+                                .addOnSuccessListener(aVoid -> {
+                                    Util.userUid = user.getUid();
+                                    Log.d(LOG_TAG,
+                                            "Felhasználó Firestore-ban elmentve, azonosítója: "+
+                                                    Util.userUid);
+
+                                    new AlertDialog.Builder(this)
+                                            .setTitle("Sikeres regisztráció")
+                                            .setIcon(R.drawable.check_circle_green_24)
+                                            .setMessage("Köszönjük, hogy regisztrált, " + userName + "!")
+                                            .setPositiveButton("Tovább", (dialog, which) ->
+                                                    Util.startActivityWithAnimation(
+                                                            this, BookingActivity.class))
+                                            .setCancelable(false)
+                                            .show();
+                                })
+                                .addOnFailureListener(e -> Toast.makeText(this,
+                                        "Adatmentés sikertelen: " + e.getMessage(),
+                                        Toast.LENGTH_LONG).show());
+
+                    } else {
+                        Toast.makeText(this,
+                                "Regisztráció sikertelen: " +
+                                        Objects.requireNonNull(task.getException()).getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     public void mainView(View view) {
-        Util.userId = 0;
+        Util.userUid = null;
         Util.startActivityWithAnimation(
                 this, MainActivity.class);
     }
