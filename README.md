@@ -1,3 +1,3 @@
 # Központi Időpontfoglaló Alkalmazás
 
-**Készítette:** Ódry Krisztina*
+**Készítette:** Ódry Krisztina
