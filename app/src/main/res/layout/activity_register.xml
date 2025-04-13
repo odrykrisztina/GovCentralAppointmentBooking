@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/register"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".RegisterActivity">
+
+    <ImageView
+        android:id="@+id/topShape"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:contentDescription="@string/header"
+        android:scaleType="centerCrop"
+        android:src="@drawable/top_wave_shape"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ImageContrastCheck" />
+
+    <TextView
+        android:id="@+id/institution"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="-150dp"
+        android:text="@string/government_office"
+        android:textColor="@color/green"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/topShape"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/topShape"
+        tools:ignore="MissingConstraints" />
+
+    <LinearLayout
+        android:id="@+id/formBlock"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-40dp"
+        android:background="@android:color/white"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topShape"
+        app:layout_constraintVertical_bias="0.5">
+
+        <TextView
+            android:id="@+id/registerHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:drawableLeft="@drawable/register_green_32"
+            android:text="@string/register"
+            android:textColor="@color/green"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            tools:ignore="RtlHardcoded,UseCompatTextViewDrawableXml" />
+
+        <EditText
+            android:id="@+id/userNameInput"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:autofillHints=""
+            android:drawableStart="@drawable/person_grey_20"
+            android:drawablePadding="8dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/name"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            android:textColorHint="@color/dimGray" />
+
+        <EditText
+            android:id="@+id/emailInput"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:autofillHints=""
+            android:drawableStart="@drawable/email_grey_20"
+            android:drawablePadding="8dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            android:minHeight="48dp"
+            android:textColorHint="@color/dimGray"
+            tools:ignore="TextContrastCheck" />
+
+        <EditText
+            android:id="@+id/phoneInput"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:autofillHints=""
+            android:drawableStart="@drawable/phone_gray_20"
+            android:drawablePadding="8dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/phone"
+            android:inputType="phone"
+            android:minHeight="48dp"
+            android:textColorHint="@color/dimGray" />
+
+        <EditText
+            android:id="@+id/passwordInput"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:autofillHints=""
+            android:drawableStart="@drawable/lock_grey_20"
+            android:drawablePadding="8dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:minHeight="48dp"
+            android:textColorHint="@color/dimGray" />
+
+        <EditText
+            android:id="@+id/passwordConfirmInput"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:autofillHints=""
+            android:drawableStart="@drawable/key_gray_20"
+            android:drawablePadding="8dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/password_confirm"
+            android:inputType="textPassword"
+            android:minHeight="48dp"
+            android:textColorHint="@color/dimGray" />
+
+        <GridLayout
+            android:id="@+id/btnGrid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="25dp"
+            android:columnCount="2"
+            android:orientation="horizontal"
+            android:rowCount="1"
+            android:useDefaultMargins="true">
+
+            <Button
+                android:id="@+id/registerButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/green"
+                android:drawableLeft="@drawable/register__white_20"
+                android:drawablePadding="8dp"
+                android:onClick="register"
+                android:text="@string/register"
+                android:textColor="@android:color/white"
+                tools:ignore="DuplicateSpeakableTextCheck,RtlHardcoded,UsingOnClickInXml" />
+
+            <Button
+                android:id="@+id/cancelButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/dimGray"
+                android:drawableLeft="@drawable/cancel_white_20"
+                android:drawablePadding="8dp"
+                android:onClick="mainView"
+                android:text="@string/cancel"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                tools:ignore="RtlHardcoded,UsingOnClickInXml" />
+        </GridLayout>
+
+        <TextView
+            android:id="@+id/registerContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/when_registered_login"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/green"
+            android:drawableLeft="@drawable/login_white_20"
+            android:drawablePadding="8dp"
+            android:onClick="loginView"
+            android:text="@string/login"
+            android:textColor="@color/white"
+
+            tools:ignore="RtlHardcoded,UsingOnClickInXml" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

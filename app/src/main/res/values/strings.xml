@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">GovCentralAppointmentBooking</string>
+    <string name="welcome">Üdvözöljük!</string>
+    <string name="government_office">Szegedi Kormányhivatal</string>
+    <string name="government_offices">Kormányablak:</string>
+    <string name="appointment_booking_system">Időpontfoglalási rendszer</string>
+    <string name="appointment_booking">Időpontfoglalás</string>
+    <string name="please_login_to_continue">Kérjük, jelentkezzen be a folytatáshoz!</string>
+    <string name="login">Bejelentkezés</string>
+    <string name="header">Fejléc</string>
+    <string name="cancel">Mégsem</string>
+    <string name="register">Regisztráció</string>
+    <string name="password">Jelszó</string>
+    <string name="email">Email</string>
+    <string name="no_account">Ha még nincs fiókja, regisztráljon!</string>
+    <string name="name">Név</string>
+    <string name="password_confirm">Jelszó megerősítése</string>
+    <string name="when_registered_login">Ha már regisztrált, jelenkezzen be!</string>
+    <string name="phone">Telefon</string>
+    <string name="to_reserve">Lefoglal</string>
+    <string name="logout">Kijelentkezés</string>
+    <string name="office_1">Rákóczi tér 1.</string>
+    <string name="office_2">Kereskedő köz 5/A-B.</string>
+    <string name="office_3">Szőregi út 80.</string>
+    <string name="selected">"Kiválasztva"</string>
+    <string name="appointment">Időpont:</string>
+    <string name="logon">"Bejelentkezve"</string>
+    <string name="to_book">Foglal</string>
+    <string name="office_work">Ügyintézés:</string>
+    <string name="date">Dátum:</string>
+    <string name="date_choice">Válassz dátumot</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="next">Tovább</string>
+    <string name="back">Vissza</string>
+    <string name="office">Hivatal:</string>
+    <string name="service">Ügytípus:</string>
+    <string name="save">Mentés</string>
+    <string name="exit">Kilép</string>
+</resources>
