@@ -1,2 +1,3 @@
-Központi Időpontfoglaló Alkalmazás
-==============
+# Központi Időpontfoglaló Alkalmazás
+
+**Készítette:** Ódry Krisztina*
