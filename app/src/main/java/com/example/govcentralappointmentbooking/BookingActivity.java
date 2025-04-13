@@ -296,6 +296,11 @@ public class BookingActivity extends AppCompatActivity {
                         "\nDátum: " + dateSelected +
                         "\nIdőpont: " + Util.timeSelected +
                         "\nFoglalás időpontja: " + bookingTime);
+
+        // Todo: Create booking record.
+        //       When not success show error.
+        //       Otherwise refresh booking time.
+
         getSupportFragmentManager()
                 .popBackStack();
     }

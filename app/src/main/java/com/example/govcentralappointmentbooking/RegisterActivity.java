@@ -101,12 +101,17 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        // Todo: Check user exist
+        Log.i(LOG_TAG,
+                    "\nFelhasználó neve: " + userName +
+                        "\nEmail cím: " + email +
+                        "\nTelefon: " + phone +
+                        "\nJelszó : " + password);
+
+        // Todo: Check user email exist.
+        //       When exist show error.
+        //       Otherwise add user, and get user identifier.
+
         Util.userId = 66;
-
-        Log.i(LOG_TAG, "Regisztrált: " + userName + ", email: " + email +
-                ", telefon: " + phone + ", jelszó: " + password);
-
         Util.startActivityWithAnimation(this, BookingActivity.class);
     }
 

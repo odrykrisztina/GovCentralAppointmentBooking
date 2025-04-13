@@ -41,6 +41,8 @@ public class BookingFragment extends Fragment {
             @Nullable Bundle savedInstanceState
     ) {
 
+        // Todo: Get blocked slots from booking time.
+
         View view = inflater.inflate(R.layout.fragment_booking, container, false);
 
         Bundle args = getArguments();

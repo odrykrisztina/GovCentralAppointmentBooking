@@ -77,12 +77,14 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        Log.i(LOG_TAG, getString(R.string.logon) + ": " + email + ", " +
-                            getString(R.string.password) + ": " + password);
+        Log.i(LOG_TAG,"\nEmail cím: " + email +
+                            "\nJelszó: " + password);
 
-        // Todo: Check user exist
+        // Todo: Check user exist.
+        //       When exist get user identifier.
+        //       Otherwise shoe error.
+
         Util.userId = 66;
-
         Util.startActivityWithAnimation(this, BookingActivity.class);
     }
 
