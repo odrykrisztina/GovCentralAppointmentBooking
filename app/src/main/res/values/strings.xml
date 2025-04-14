@@ -38,4 +38,5 @@
     <string name="save">Mentés</string>
     <string name="exit">Kilép</string>
     <string name="reservations">Foglalásaim</string>
+    <string name="time_registers">időpont foglalásai</string>
 </resources>

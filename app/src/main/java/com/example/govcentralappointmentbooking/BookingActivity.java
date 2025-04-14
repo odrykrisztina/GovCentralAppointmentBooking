@@ -279,6 +279,7 @@ public class BookingActivity extends AppCompatActivity {
                 .setIcon(R.drawable.question_mark_blue_24)
                 .setPositiveButton("Igen", (dialog, which) -> {
                     Util.userUid = null;
+                    Util.userName = null;
                     Util.startActivityWithAnimation(this, MainActivity.class);
                 })
                 .setNegativeButton("Mégse", null)

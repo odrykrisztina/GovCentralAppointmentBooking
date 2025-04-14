@@ -12,12 +12,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.example.govcentralappointmentbooking.utils.Util;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.Map;
 
 public class ReservationsFragment extends Fragment {
 
     private GridLayout reservationsTableGrid;
+
+    private TextView userNameText;
 
     @Nullable
     @Override
@@ -29,31 +32,25 @@ public class ReservationsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_reservations,
                 container, false);
+
         reservationsTableGrid = view.findViewById(R.id.reservationsTableGrid);
+        userNameText = view.findViewById(R.id.userName);
 
         loadUserReservations();
         return view;
     }
 
-    /*
-    public static Map<String, String> getOfficeNameMap() {
-        return BookingActivity.getStringOfficeHashMap();
-    }
-
-    public static Map<String, String> getServiceNameMap() {
-        return BookingActivity.getStringServiceHashMap();
-    }
-
-     */
-
     private void loadUserReservations() {
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection("bookings")
                 .whereEqualTo("userUid", Util.userUid)
                 .get()
                 .addOnSuccessListener(querySnapshots -> {
+
                     reservationsTableGrid.removeAllViews();
+                    userNameText.setText(Util.userName);
 
                     Map<String, String> officeMap = BookingActivity.getStringOfficeHashMap();
                     Map<String, String> serviceMap = BookingActivity.getStringServiceHashMap();

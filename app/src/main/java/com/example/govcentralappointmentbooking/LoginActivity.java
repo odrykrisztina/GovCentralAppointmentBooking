@@ -97,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                     if (documentSnapshot.exists()) {
                                         String userName = documentSnapshot.getString("userName");
+                                        Util.userName = userName;
 
                                         new AlertDialog.Builder(this)
                                                 .setTitle("Sikeres bejelentkezés")
@@ -130,6 +131,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void mainView(View view) {
         Util.userUid = null;
+        Util.userName = null;
         Util.startActivityWithAnimation(
                 this, MainActivity.class);
     }

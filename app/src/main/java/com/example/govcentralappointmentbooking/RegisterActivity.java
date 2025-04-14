@@ -131,6 +131,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 .set(userData)
                                 .addOnSuccessListener(aVoid -> {
                                     Util.userUid = user.getUid();
+                                    Util.userName = userName;
                                     Log.d(LOG_TAG,
                                             "Felhasználó Firestore-ban elmentve, azonosítója: "+
                                                     Util.userUid);
@@ -160,6 +161,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void mainView(View view) {
         Util.userUid = null;
+        Util.userName = null;
         Util.startActivityWithAnimation(
                 this, MainActivity.class);
     }
