@@ -26,10 +26,10 @@
         android:id="@+id/institution"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="-150dp"
+        android:layout_marginEnd="-125dp"
         android:text="@string/government_office"
         android:textColor="@color/green"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/topShape"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,7 +58,7 @@
             android:text="@string/appointment_booking"
             android:drawableLeft="@drawable/time_green_32"
             android:drawablePadding="12dp"
-            android:textSize="30sp"
+            android:textSize="26sp"
             android:textStyle="bold"
             android:textColor="@color/green"
             android:layout_marginBottom="30dp"
@@ -66,7 +66,7 @@
 
         <TextView
             android:id="@+id/officeHeader"
-            android:layout_width="350dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:text="@string/government_offices"
             android:textSize="18sp"
@@ -80,7 +80,7 @@
 
         <Spinner
             android:id="@+id/officeSpinner"
-            android:layout_width="350dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:minHeight="48dp"
@@ -88,7 +88,7 @@
 
         <TextView
             android:id="@+id/officeWorkHeader"
-            android:layout_width="350dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/office_work"
@@ -103,7 +103,7 @@
 
         <Spinner
             android:id="@+id/serviceSpinner"
-            android:layout_width="350dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:minHeight="48dp"
@@ -111,7 +111,7 @@
 
         <TextView
             android:id="@+id/dateHeader"
-            android:layout_width="350dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:text="@string/date"
             android:textSize="18sp"
@@ -125,7 +125,7 @@
 
         <EditText
             android:id="@+id/dateInput"
-            android:layout_width="350dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
             android:autofillHints=""
@@ -153,10 +153,13 @@
                 android:id="@+id/reserveButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:drawablePadding="4dp"
                 android:backgroundTint="@color/green"
                 android:drawableLeft="@drawable/arrow_circle_right_white_20"
-                android:drawablePadding="8dp"
                 android:onClick="nextStep"
                 android:text="@string/next"
                 android:textColor="@android:color/white"
@@ -166,10 +169,13 @@
                 android:id="@+id/logoutButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:drawablePadding="4dp"
                 android:backgroundTint="@color/green"
                 android:drawableLeft="@drawable/logout_white_20"
-                android:drawablePadding="8dp"
                 android:onClick="mainView"
                 android:text="@string/exit"
                 android:textColor="@android:color/white"

@@ -51,14 +51,12 @@ public class BookingActivity extends AppCompatActivity {
     @NonNull
     private static LinkedHashMap<String, String> getStringServiceHashMap() {
         LinkedHashMap<String, String> serviceMap = new LinkedHashMap<>();
-        serviceMap.put("SZIG", "Igazolvány cseréje, pótlása");
-        serviceMap.put("DIGA", "Digitális Állampolgárság Program");
-        serviceMap.put("HAJO", "Hajós útlevél kiadása, pótlása");
-        serviceMap.put("MUT1", "Magánútlevél kiadása, pótlása");
-        serviceMap.put("MUT2", "Második magánútlevél kiadása, pótlása");
-        serviceMap.put("SZUT", "Szolgálati útlevél kiadása, pótlása");
-        serviceMap.put("UREG", "Ügyfélkapu-regisztráció");
-        serviceMap.put("VEZE", "Vezetői engedély cseréje, pótlása");
+        serviceMap.put("DIGA", "Állampolgárság");
+        serviceMap.put("GEPJ", "Gépjármű");
+        serviceMap.put("SZIG", "Igazolvány");
+        serviceMap.put("UTLE", "Úlevél");
+        serviceMap.put("UREG", "Ügyfélkapu");
+        serviceMap.put("VEZE", "Vezetői engedély");
         serviceMap.put("EGYE", "Egyéb");
         return serviceMap;
     }
