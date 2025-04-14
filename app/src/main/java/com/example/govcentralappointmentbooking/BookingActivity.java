@@ -40,7 +40,7 @@ public class BookingActivity extends AppCompatActivity {
     private EditText dateInput;
 
     @NonNull
-    private static LinkedHashMap<String, String> getStringOfficeHashMap() {
+    static LinkedHashMap<String, String> getStringOfficeHashMap() {
         LinkedHashMap<String, String> officeMap = new LinkedHashMap<>();
         officeMap.put("RAKO", "6722 Szeged, Rákóczi tér 1.");
         officeMap.put("KERE", "6728 Szeged, Kereskedő köz 5/A-B.");
@@ -49,7 +49,7 @@ public class BookingActivity extends AppCompatActivity {
     }
 
     @NonNull
-    private static LinkedHashMap<String, String> getStringServiceHashMap() {
+    static LinkedHashMap<String, String> getStringServiceHashMap() {
         LinkedHashMap<String, String> serviceMap = new LinkedHashMap<>();
         serviceMap.put("DIGA", "Állampolgárság");
         serviceMap.put("GEPJ", "Gépjármű");
@@ -152,22 +152,37 @@ public class BookingActivity extends AppCompatActivity {
         });
 
         getSupportFragmentManager().addOnBackStackChangedListener(() -> {
-            Fragment fragment = getSupportFragmentManager()
-                    .findFragmentById(R.id.fragmentBookingContainer);
-            if (fragment == null) {
 
-                View formBlock = findViewById(R.id.formMainBooking);
-                View fragmentContainer = findViewById(R.id.fragmentBookingContainer);
+            Fragment bookingFragment = getSupportFragmentManager()
+                    .findFragmentById(R.id.fragmentBookingContainer);
+
+            Fragment reservationsFragment = getSupportFragmentManager()
+                    .findFragmentById(R.id.fragmentReservationsContainer);
+
+            if (bookingFragment == null && reservationsFragment == null) {
+
+                View formMainBooking = findViewById(R.id.formMainBooking);
+                View fragmentBookingContainer = findViewById(R.id.fragmentBookingContainer);
+                View reservationsContainer = findViewById(R.id.fragmentReservationsContainer);
+
+                formMainBooking.setVisibility(View.VISIBLE);
+                fragmentBookingContainer.setVisibility(View.GONE);
+                reservationsContainer.setVisibility(View.GONE);
 
                 Animation inAnim = AnimationUtils
                         .loadAnimation(this, R.anim.slide_in_left);
-                formBlock.startAnimation(inAnim);
-                formBlock.setVisibility(View.VISIBLE);
+                formMainBooking.startAnimation(inAnim);
+                formMainBooking.setVisibility(View.VISIBLE);
 
-                Animation outAnim = AnimationUtils
+                Animation outBookingAnim = AnimationUtils
                         .loadAnimation(this, R.anim.slide_out_right);
-                fragmentContainer.startAnimation(outAnim);
-                fragmentContainer.setVisibility(View.GONE);
+                fragmentBookingContainer.startAnimation(outBookingAnim);
+                fragmentBookingContainer.setVisibility(View.GONE);
+
+                Animation outReservationsAnim = AnimationUtils
+                        .loadAnimation(this, R.anim.slide_out_right);
+                fragmentBookingContainer.startAnimation(outReservationsAnim);
+                fragmentBookingContainer.setVisibility(View.GONE);
             }
         });
 
