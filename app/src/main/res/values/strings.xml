@@ -37,4 +37,5 @@
     <string name="service">Ügytípus:</string>
     <string name="save">Mentés</string>
     <string name="exit">Kilép</string>
+    <string name="reservations">Foglalásaim</string>
 </resources>

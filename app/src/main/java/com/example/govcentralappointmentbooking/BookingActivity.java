@@ -153,11 +153,11 @@ public class BookingActivity extends AppCompatActivity {
 
         getSupportFragmentManager().addOnBackStackChangedListener(() -> {
             Fragment fragment = getSupportFragmentManager()
-                    .findFragmentById(R.id.fragmentContainer);
+                    .findFragmentById(R.id.fragmentBookingContainer);
             if (fragment == null) {
 
-                View formBlock = findViewById(R.id.formFirstBlock);
-                View fragmentContainer = findViewById(R.id.fragmentContainer);
+                View formBlock = findViewById(R.id.formMainBooking);
+                View fragmentContainer = findViewById(R.id.fragmentBookingContainer);
 
                 Animation inAnim = AnimationUtils
                         .loadAnimation(this, R.anim.slide_in_left);
@@ -210,7 +210,7 @@ public class BookingActivity extends AppCompatActivity {
         Log.i(LOG_TAG, "onRestart");
     }
 
-    public void nextStep(View view) {
+    public void timeSelect(View view) {
 
         dateSelected = dateInput.getText().toString().trim();
         if (dateSelected.isEmpty()) {
@@ -221,8 +221,8 @@ public class BookingActivity extends AppCompatActivity {
             return;
         }
 
-        findViewById(R.id.formFirstBlock).setVisibility(View.GONE);
-        findViewById(R.id.fragmentContainer).setVisibility(View.VISIBLE);
+        findViewById(R.id.formMainBooking).setVisibility(View.GONE);
+        findViewById(R.id.fragmentBookingContainer).setVisibility(View.VISIBLE);
 
         Bundle args = new Bundle();
         args.putString("dateSelected", dateSelected);
@@ -241,7 +241,7 @@ public class BookingActivity extends AppCompatActivity {
                         R.anim.slide_in_left,
                         R.anim.slide_out_right
                 )
-                .replace(R.id.fragmentContainer, fragment)
+                .replace(R.id.fragmentBookingContainer, fragment)
                 .addToBackStack(null)
                 .commit();
 
@@ -313,5 +313,23 @@ public class BookingActivity extends AppCompatActivity {
                             "Foglalás sikertelen: " + e.getMessage(),
                             Toast.LENGTH_LONG).show();
                 });
+    }
+
+    public void reservations(View view) {
+
+        findViewById(R.id.formMainBooking).setVisibility(View.GONE);
+        findViewById(R.id.fragmentReservationsContainer).setVisibility(View.VISIBLE);
+
+        ReservationsFragment fragment = new ReservationsFragment();
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(
+                        R.anim.slide_in_right,
+                        R.anim.slide_out_left,
+                        R.anim.slide_in_left,
+                        R.anim.slide_out_right
+                )
+                .replace(R.id.fragmentReservationsContainer, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

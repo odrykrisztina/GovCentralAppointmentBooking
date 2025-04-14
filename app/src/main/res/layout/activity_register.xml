@@ -206,7 +206,6 @@
             android:onClick="loginView"
             android:text="@string/login"
             android:textColor="@color/white"
-
             tools:ignore="RtlHardcoded,UsingOnClickInXml" />
     </LinearLayout>
 

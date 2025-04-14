@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:id="@+id/formReservationsBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@+id/institution"
+        tools:ignore="UnknownIdInLayout">
+
+        <TextView
+            android:id="@+id/reservationsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reservations"
+            android:textColor="@color/green"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <GridLayout
+            android:id="@+id/reservationsTableGrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alignmentMode="alignMargins"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:padding="10dp" />
+
+        <Button
+            android:id="@+id/preventButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:backgroundTint="@color/green"
+            android:drawableLeft="@drawable/arrow_circle_left_white_20"
+            android:onClick="goBack"
+            android:text="@string/back"
+            android:textColor="@android:color/white"
+            tools:ignore="RtlHardcoded,UsingOnClickInXml" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
