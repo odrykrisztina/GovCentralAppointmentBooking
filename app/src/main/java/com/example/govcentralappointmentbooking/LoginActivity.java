@@ -4,6 +4,7 @@ import com.example.govcentralappointmentbooking.utils.Util;
 import com.example.govcentralappointmentbooking.utils.Validator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import android.view.inputmethod.InputMethodManager;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -107,6 +109,12 @@ public class LoginActivity extends AppCompatActivity {
         if (!Validator.isValidPassword(password)) {
             passwordInput.setError("Érvénytelen jelszó!\n" + Validator.PASSWORD_ROULE);
             return;
+        }
+
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        View focusedView = this.getCurrentFocus();
+        if (focusedView != null) {
+            imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
         }
 
         FirebaseAuth.getInstance()

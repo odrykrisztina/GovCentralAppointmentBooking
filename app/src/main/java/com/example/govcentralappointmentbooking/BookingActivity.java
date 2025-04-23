@@ -255,4 +255,9 @@ public class BookingActivity extends AppCompatActivity {
                 .setNegativeButton("Mégse", null)
                 .show();
     }
+
+    public void reservations(View view) {
+        Util.startActivityWithAnimation(
+                this, ReservationsActivity.class);
+    }
 }

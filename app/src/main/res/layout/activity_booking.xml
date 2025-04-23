@@ -140,11 +140,26 @@
                     android:id="@+id/reserveButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:minWidth="160dp"
                     android:drawablePadding="4dp"
                     android:backgroundTint="@color/green"
                     android:drawableLeft="@drawable/arrow_circle_right_white_20"
                     android:onClick="timeSelect"
                     android:text="@string/next"
+                    android:textColor="@android:color/white"
+                    tools:ignore="DuplicateSpeakableTextCheck,RtlHardcoded,UsingOnClickInXml" />
+
+                <Button
+                    android:id="@+id/reservationsButton"
+                    android:layout_width="wrap_content"
+                    android:minWidth="160dp"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="4dp"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/green"
+                    android:drawableLeft="@drawable/arrow_circle_right_white_20"
+                    android:onClick="reservations"
+                    android:text="@string/reservations"
                     android:textColor="@android:color/white"
                     tools:ignore="DuplicateSpeakableTextCheck,RtlHardcoded,UsingOnClickInXml" />
 

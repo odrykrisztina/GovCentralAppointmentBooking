@@ -4,10 +4,12 @@ import com.example.govcentralappointmentbooking.utils.Util;
 import com.example.govcentralappointmentbooking.utils.Validator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
@@ -136,11 +138,11 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        Log.i(LOG_TAG,
-                "\nFelhasználó neve: " + userName +
-                        "\nEmail cím: " + email +
-                        "\nTelefon: " + phone +
-                        "\nJelszó : " + password);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        View focusedView = this.getCurrentFocus();
+        if (focusedView != null) {
+            imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
+        }
 
         FirebaseAuth.getInstance()
                 .createUserWithEmailAndPassword(email, password)

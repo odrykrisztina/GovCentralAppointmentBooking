@@ -1,10 +1,12 @@
 package com.example.govcentralappointmentbooking;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
@@ -81,6 +83,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             popupView.findViewById(R.id.menu_back).setOnClickListener(view -> {
                 popupWindow.dismiss();
+                overridePendingTransition(R.anim.fade_in, R.anim.slide_out_right);
                 finish();
             });
         });
@@ -162,6 +165,12 @@ public class ProfileActivity extends AppCompatActivity {
             }
         }
 
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        View focusedView = this.getCurrentFocus();
+        if (focusedView != null) {
+            imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
+        }
+
         FirebaseAuth.getInstance()
                 .signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
@@ -197,6 +206,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (originalPhone.equals(phone) && userName.equals(Util.userName)) {
             Toast.makeText(this, "A profilt nem szükséges frissíteni!",
                     Toast.LENGTH_SHORT).show();
+            overridePendingTransition(R.anim.fade_in, R.anim.slide_out_right);
             finish();
             return;
         }
@@ -207,6 +217,7 @@ public class ProfileActivity extends AppCompatActivity {
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Profil sikeresen frissítve!", Toast.LENGTH_SHORT).show();
                     Util.userName = userName;
+                    overridePendingTransition(R.anim.fade_in, R.anim.slide_out_right);
                     finish();
                 })
                 .addOnFailureListener(e -> Toast.makeText(

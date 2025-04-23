@@ -85,6 +85,7 @@ public class BookingTimeActivity extends AppCompatActivity {
 
             popupView.findViewById(R.id.menu_back).setOnClickListener(view -> {
                 popupWindow.dismiss();
+                overridePendingTransition(R.anim.fade_in, R.anim.slide_out_right);
                 finish();
             });
         });
@@ -279,6 +280,7 @@ public class BookingTimeActivity extends AppCompatActivity {
                     Toast.makeText(this,
                             "Foglalás sikeres!",
                             Toast.LENGTH_LONG).show();
+                    overridePendingTransition(R.anim.fade_in, R.anim.slide_out_right);
                     finish();
                 })
                 .addOnFailureListener(e -> {
