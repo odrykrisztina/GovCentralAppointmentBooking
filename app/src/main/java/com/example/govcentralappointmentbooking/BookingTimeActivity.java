@@ -19,15 +19,18 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.govcentralappointmentbooking.utils.Util;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class BookingTimeActivity extends AppCompatActivity {
 
-    private static final String LOG_TAG = MainActivity.class.getName();
+    private static final String LOG_TAG = BookingTimeActivity.class.getName();
 
     private String officeSelectedName;
     private String officeSelectedKey;
@@ -40,11 +43,10 @@ public class BookingTimeActivity extends AppCompatActivity {
     private Button saveButton;
 
     private final int[] minutes = {0, 15, 30, 45};
-    private final int[]  hours = {8, 9, 10, 11, 12, 13, 14, 15, 16, 17};
+    private final int[] hours = {8, 9, 10, 11, 12, 13, 14, 15, 16, 17};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_time);
 
@@ -62,6 +64,7 @@ public class BookingTimeActivity extends AppCompatActivity {
         TextView dateText = findViewById(R.id.dateText);
         TextView officeText = findViewById(R.id.officeText);
         TextView serviceText = findViewById(R.id.serviceText);
+        timeTableGrid = findViewById(R.id.timeTableGrid);
 
         dateText.setText(dateSelected);
         officeText.setText(officeSelectedName);
@@ -92,42 +95,6 @@ public class BookingTimeActivity extends AppCompatActivity {
         Log.i(LOG_TAG, "onCreate");
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.i(LOG_TAG, "onStart");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.i(LOG_TAG, "onStop");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.i(LOG_TAG, "onDestroy");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.i(LOG_TAG, "onPause");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.i(LOG_TAG, "onResume");
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.i(LOG_TAG, "onRestart");
-    }
-
     private void loadBookingsFromFirestore() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -152,7 +119,6 @@ public class BookingTimeActivity extends AppCompatActivity {
                         }
                     }
 
-                    // Most már betölthetjük az időtáblázatot
                     generateTimeTable(blockedSlots, mySlots);
                 })
                 .addOnFailureListener(e ->
@@ -160,7 +126,6 @@ public class BookingTimeActivity extends AppCompatActivity {
     }
 
     private void generateTimeTable(Set<String> blockedSlots, Set<String> mySlots) {
-
         Context ctx = this;
         timeTableGrid.removeAllViews();
 
@@ -170,11 +135,9 @@ public class BookingTimeActivity extends AppCompatActivity {
         }
 
         for (int hour : hours) {
-
             addLabelCell(ctx, hour + ":00");
             for (int min : minutes) {
-                @SuppressLint("DefaultLocale") String time =
-                        String.format("%02d:%02d", hour, min);
+                @SuppressLint("DefaultLocale") String time = String.format("%02d:%02d", hour, min);
 
                 Button btn = new Button(ctx);
                 btn.setText(time);
@@ -185,24 +148,23 @@ public class BookingTimeActivity extends AppCompatActivity {
 
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                 params.width = 0;
-                params.height = GridLayout.LayoutParams.WRAP_CONTENT;
+                params.height = (int) (getResources().getDisplayMetrics().density * 36);
                 params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
                 params.setMargins(4, 4, 4, 4);
-                params.height = (int) (getResources().getDisplayMetrics().density * 36);
                 btn.setLayoutParams(params);
 
                 if (mySlots.contains(time)) {
-                    btn.setBackgroundColor(Color.parseColor("#2196F3")); // kék
+                    btn.setBackgroundColor(Color.parseColor("#2196F3"));
                     btn.setTextColor(Color.WHITE);
-                    btn.setOnClickListener(v -> handleOwnBooking((Button) v)); // saját foglalás esetén törléshez
+                    btn.setOnClickListener(v -> handleOwnBooking((Button) v));
                 } else if (blockedSlots.contains(time)) {
-                    btn.setBackgroundColor(Color.parseColor("#FF0000")); // piros
+                    btn.setBackgroundColor(Color.parseColor("#FF0000"));
                     btn.setTextColor(Color.WHITE);
                     btn.setEnabled(false);
                 } else {
                     btn.setBackgroundColor(Color.WHITE);
                     btn.setBackgroundResource(R.drawable.time_button_border);
-                    btn.setOnClickListener(v -> handleSelection((Button) v)); // új foglalás
+                    btn.setOnClickListener(v -> handleSelection((Button) v));
                 }
 
                 timeTableGrid.addView(btn);
@@ -236,12 +198,7 @@ public class BookingTimeActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot doc : querySnapshots) {
                         doc.getReference().delete();
                     }
-
-                    Toast.makeText(this,
-                            "Foglalás törölve: " + time,
-                            Toast.LENGTH_SHORT).show();
-
-                    // Frissítsd újra a foglalásokat
+                    Toast.makeText(this, "Foglalás törölve: " + time, Toast.LENGTH_SHORT).show();
                     loadBookingsFromFirestore();
                 })
                 .addOnFailureListener(e -> Toast.makeText(this,
@@ -249,25 +206,7 @@ public class BookingTimeActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show());
     }
 
-    private void addLabelCell(Context ctx, String text) {
-
-        TextView tv = new TextView(ctx);
-        tv.setText(text);
-        tv.setPadding(8, 8, 8, 8);
-        tv.setTextColor(Color.BLACK);
-        tv.setGravity(Gravity.CENTER);
-
-        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-        params.width = 0;
-        params.height = GridLayout.LayoutParams.WRAP_CONTENT;
-        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
-        tv.setLayoutParams(params);
-
-        timeTableGrid.addView(tv);
-    }
-
     private void handleSelection(Button btn) {
-
         if (selectedButton == btn) {
             selectedButton.setBackgroundColor(Color.WHITE);
             selectedButton.setTextColor(Color.BLACK);
@@ -293,5 +232,63 @@ public class BookingTimeActivity extends AppCompatActivity {
         saveButton.setEnabled(true);
         saveButton.setAlpha(1.0f);
         Util.timeSelected = selectedButton.getTag().toString();
+    }
+
+    private void addLabelCell(Context ctx, String text) {
+        TextView tv = new TextView(ctx);
+        tv.setText(text);
+        tv.setPadding(8, 8, 8, 8);
+        tv.setTextColor(Color.BLACK);
+        tv.setGravity(Gravity.CENTER);
+
+        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+        params.width = 0;
+        params.height = GridLayout.LayoutParams.WRAP_CONTENT;
+        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
+        tv.setLayoutParams(params);
+
+        timeTableGrid.addView(tv);
+    }
+
+    public void confirmSave(View view) {
+        new AlertDialog.Builder(this)
+                .setTitle("Időpont foglalás")
+                .setIcon(R.drawable.question_mark_blue_24)
+                .setMessage("Biztosan lefoglalod az időpontot?" +
+                        "\nKormányablak:\n" + officeSelectedName +
+                        "\nSzolgáltatás:\n" + serviceSelectedName +
+                        "\nDátum: " + dateSelected +
+                        "\nIdőpont: " + Util.timeSelected)
+                .setPositiveButton("Igen", (dialog, which) -> bookingSave())
+                .setNegativeButton("Mégse", null)
+                .show();
+    }
+
+    private void bookingSave() {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        Map<String, Object> booking = new HashMap<>();
+        booking.put("userUid", Util.userUid);
+        booking.put("officeKey", officeSelectedKey);
+        booking.put("serviceKey", serviceSelectedKey);
+        booking.put("date", dateSelected);
+        booking.put("time", Util.timeSelected);
+        booking.put("createdAt", Timestamp.now());
+
+        db.collection("bookings")
+                .add(booking)
+                .addOnSuccessListener(documentReference -> {
+                    Toast.makeText(this,
+                            "Foglalás sikeres!",
+                            Toast.LENGTH_LONG).show();
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(LOG_TAG, "Hiba a foglalás mentésekor: ", e);
+                    Toast.makeText(this,
+                            "Foglalás sikertelen: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                });
     }
 }
