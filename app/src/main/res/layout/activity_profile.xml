@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".ProfileActivity">
 
     <include
         layout="@layout/header"
@@ -51,11 +51,27 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:drawableLeft="@drawable/register_green_32"
-                    android:text="@string/register"
+                    android:text="@string/profile"
                     android:textColor="@color/green"
                     android:textSize="28sp"
                     android:textStyle="bold"
                     tools:ignore="RtlHardcoded,UseCompatTextViewDrawableXml" />
+
+                <EditText
+                    android:id="@+id/emailInput"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:autofillHints=""
+                    android:drawableStart="@drawable/email_grey_20"
+                    android:drawablePadding="8dp"
+                    android:focusable="false"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"
+                    android:minHeight="48dp"
+                    android:textColorHint="@color/dimGray"
+                    tools:ignore="TextContrastCheck" />
 
                 <EditText
                     android:id="@+id/userNameInput"
@@ -71,22 +87,6 @@
                     android:inputType="textPersonName"
                     android:minHeight="48dp"
                     android:textColorHint="@color/dimGray" />
-
-                <EditText
-                    android:id="@+id/emailInput"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:autofillHints=""
-                    android:drawableStart="@drawable/email_grey_20"
-                    android:drawablePadding="8dp"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:hint="@string/email"
-                    android:inputType="textEmailAddress"
-                    android:minHeight="48dp"
-                    android:textColorHint="@color/dimGray"
-                    tools:ignore="TextContrastCheck" />
 
                 <EditText
                     android:id="@+id/phoneInput"
@@ -119,16 +119,31 @@
                     android:textColorHint="@color/dimGray" />
 
                 <EditText
+                    android:id="@+id/newPasswordInput"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:autofillHints=""
+                    android:drawableStart="@drawable/lock_grey_20"
+                    android:drawablePadding="8dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/new_password"
+                    android:inputType="textPassword"
+                    android:minHeight="48dp"
+                    android:textColorHint="@color/dimGray" />
+
+                <EditText
                     android:id="@+id/passwordConfirmInput"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="20dp"
                     android:autofillHints=""
                     android:drawableStart="@drawable/key_gray_20"
                     android:drawablePadding="8dp"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-                    android:hint="@string/password_confirm"
+                    android:hint="@string/new_password_confirm"
                     android:inputType="textPassword"
                     android:minHeight="48dp"
                     android:textColorHint="@color/dimGray" />
@@ -139,37 +154,12 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="4dp"
                     android:backgroundTint="@color/green"
-                    android:drawableLeft="@drawable/register_white_20"
-                    android:onClick="register"
-                    android:text="@string/register"
+                    android:drawableLeft="@drawable/check_white_20"
+                    android:onClick="saveProfile"
+                    android:text="@string/save"
                     android:textColor="@android:color/white"
                     tools:ignore="DuplicateSpeakableTextCheck,RtlHardcoded,UsingOnClickInXml" />
 
-                <TextView
-                    android:id="@+id/registerContent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="@string/when_registered_login"
-                    android:textSize="14sp"
-                    android:textStyle="bold"/>
-
-                <Button
-                    android:id="@+id/loginButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="4dp"
-                    android:drawablePadding="4dp"
-                    android:backgroundTint="@color/green"
-                    android:drawableLeft="@drawable/login_white_20"
-                    android:onClick="loginView"
-                    android:text="@string/login"
-                    android:textColor="@color/white"
-                    tools:ignore="RtlHardcoded,UsingOnClickInXml" />
             </LinearLayout>
 
             <Space
@@ -178,5 +168,4 @@
                 android:layout_weight="1" />
         </LinearLayout>
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,8 +1,15 @@
 package com.example.govcentralappointmentbooking;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.govcentralappointmentbooking.utils.Util;
 
@@ -15,6 +22,34 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Menu
+        ImageButton menuButton = findViewById(R.id.menuButton);
+        menuButton.setOnClickListener(v -> {
+            @SuppressLint("InflateParams") View popupView =
+                    getLayoutInflater().inflate(R.layout.menu_popup_main, null);
+            PopupWindow popupWindow = new PopupWindow(popupView,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    true);
+            popupWindow.showAsDropDown(v, 0, 50);
+
+            popupView.findViewById(R.id.menu_login).setOnClickListener(view -> {
+                popupWindow.dismiss();
+                Util.startActivityWithAnimation(
+                        this, LoginActivity.class);
+            });
+
+            popupView.findViewById(R.id.menu_register).setOnClickListener(view -> {
+                popupWindow.dismiss();
+                Util.startActivityWithAnimation(
+                        this, RegisterActivity.class);
+            });
+        });
+
+        LinearLayout mainBlock = findViewById(R.id.mainBlock);
+        Animation bounceAnim = AnimationUtils.loadAnimation(this, R.anim.bounce_scale);
+        mainBlock.startAnimation(bounceAnim);
     }
 
     @Override

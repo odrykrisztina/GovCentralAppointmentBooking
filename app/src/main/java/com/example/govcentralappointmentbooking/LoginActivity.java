@@ -6,7 +6,10 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +31,28 @@ public class LoginActivity extends AppCompatActivity {
 
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
+
+        ImageButton menuButton = findViewById(R.id.menuButton);
+        menuButton.setOnClickListener(v -> {
+            View popupView = getLayoutInflater().inflate(R.layout.menu_popup_login, null);
+            PopupWindow popupWindow = new PopupWindow(popupView,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    true);
+            popupWindow.showAsDropDown(v, 0, 50);
+
+            popupView.findViewById(R.id.menu_main).setOnClickListener(view -> {
+                popupWindow.dismiss();
+                Util.startActivityWithAnimation(
+                        this, MainActivity.class);
+            });
+
+            popupView.findViewById(R.id.menu_register).setOnClickListener(view -> {
+                popupWindow.dismiss();
+                Util.startActivityWithAnimation(
+                        this, RegisterActivity.class);
+            });
+        });
 
         Log.i(LOG_TAG, "onCreate");
     }

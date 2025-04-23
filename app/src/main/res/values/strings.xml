@@ -29,8 +29,6 @@
     <string name="office_work">Ügyintézés:</string>
     <string name="date">Dátum:</string>
     <string name="date_choice">Válassz dátumot</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="next">Tovább</string>
     <string name="back">Vissza</string>
     <string name="office">Hivatal:</string>
@@ -39,4 +37,11 @@
     <string name="exit">Kilép</string>
     <string name="reservations">Foglalásaim</string>
     <string name="time_registers">időpont foglalásai</string>
+    <string name="menu">Menű</string>
+    <string name="home">Kezdőoldal</string>
+    <string name="profile">Profil</string>
+    <string name="faster_processing">A gyorsabb ügyintézés érdekében javasoljuk, előzetesen foglaljon időpontot. Így sorban állás nélkül intézheti ügyeit Ügyfélpontunkon!</string>
+    <string name="new_password">Új jelszó</string>
+    <string name="new_password_confirm">Új jelszó megerősítése</string>
+    <string name="no_previous_bookings">Nincs korábbi foglalás.</string>
 </resources>

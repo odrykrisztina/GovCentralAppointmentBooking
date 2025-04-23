@@ -6,7 +6,10 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,6 +40,28 @@ public class RegisterActivity extends AppCompatActivity {
         phoneInput = findViewById(R.id.phoneInput);
         passwordInput = findViewById(R.id.passwordInput);
         passwordConfirmInput = findViewById(R.id.passwordConfirmInput);
+
+        ImageButton menuButton = findViewById(R.id.menuButton);
+        menuButton.setOnClickListener(v -> {
+            View popupView = getLayoutInflater().inflate(R.layout.menu_popup_register, null);
+            PopupWindow popupWindow = new PopupWindow(popupView,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    true);
+            popupWindow.showAsDropDown(v, 0, 50);
+
+            popupView.findViewById(R.id.menu_main).setOnClickListener(view -> {
+                popupWindow.dismiss();
+                Util.startActivityWithAnimation(
+                        this, MainActivity.class);
+            });
+
+            popupView.findViewById(R.id.menu_login).setOnClickListener(view -> {
+                popupWindow.dismiss();
+                Util.startActivityWithAnimation(
+                        this, LoginActivity.class);
+            });
+        });
 
         Log.i(LOG_TAG, "onCreate");
     }
@@ -110,7 +135,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         Log.i(LOG_TAG,
-                    "\nFelhasználó neve: " + userName +
+                "\nFelhasználó neve: " + userName +
                         "\nEmail cím: " + email +
                         "\nTelefon: " + phone +
                         "\nJelszó : " + password);

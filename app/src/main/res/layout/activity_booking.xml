@@ -3,222 +3,158 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/booking"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
     tools:context=".BookingActivity">
 
-    <ImageView
-        android:id="@+id/topShape"
-        android:layout_width="0dp"
-        android:layout_height="120dp"
-        android:contentDescription="@string/header"
-        android:scaleType="centerCrop"
-        android:src="@drawable/top_wave_shape"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ImageContrastCheck" />
-
-    <TextView
-        android:id="@+id/institution"
-        android:layout_width="wrap_content"
+    <!-- Header -->
+    <include
+        layout="@layout/header"
+        android:id="@+id/header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="-125dp"
-        android:text="@string/government_office"
-        android:textColor="@color/green"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/topShape"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/topShape"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/formMainBooking"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:padding="16dp"
-        android:background="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@id/topShape"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.5">
-
-        <TextView
-            android:id="@+id/bookingHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/appointment_booking"
-            android:drawableLeft="@drawable/time_green_32"
-            android:drawablePadding="12dp"
-            android:textSize="26sp"
-            android:textStyle="bold"
-            android:textColor="@color/green"
-            android:layout_marginBottom="30dp"
-            tools:ignore="RtlHardcoded,UseCompatTextViewDrawableXml" />
-
-        <TextView
-            android:id="@+id/officeHeader"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:text="@string/government_offices"
-            android:textSize="18sp"
-            android:paddingStart="4dp"
-            android:drawableStart="@drawable/place_gray_20"
-            android:drawablePadding="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/systemName"
-            tools:ignore="RtlSymmetry,UseCompatTextViewDrawableXml" />
-
-        <Spinner
-            android:id="@+id/officeSpinner"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:minHeight="48dp"
-            android:layout_marginBottom="16dp" />
-
-        <TextView
-            android:id="@+id/officeWorkHeader"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/office_work"
-            android:textSize="18sp"
-            android:paddingStart="4dp"
-            android:drawableStart="@drawable/event_seat_gray_20"
-            android:drawablePadding="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/systemName"
-            tools:ignore="RtlSymmetry,UseCompatTextViewDrawableXml" />
-
-        <Spinner
-            android:id="@+id/serviceSpinner"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:minHeight="48dp"
-            android:layout_marginBottom="16dp" />
-
-        <TextView
-            android:id="@+id/dateHeader"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:text="@string/date"
-            android:textSize="18sp"
-            android:paddingStart="4dp"
-            android:drawableStart="@drawable/calendar_gray_20"
-            android:drawablePadding="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/systemName"
-            tools:ignore="RtlSymmetry,UseCompatTextViewDrawableXml" />
-
-        <EditText
-            android:id="@+id/dateInput"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:autofillHints=""
-            android:clickable="true"
-            android:drawableEnd="@drawable/calendar_gray_20"
-            android:drawablePadding="8dp"
-            android:focusable="false"
-            android:hint="@string/date_choice"
-            android:inputType="none"
-            android:padding="12dp"
-            android:textColorHint="#757575"
-            tools:ignore="KeyboardInaccessibleWidget,TextFields" />
-
-        <GridLayout
-            android:id="@+id/btnGrid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:rowCount="1"
-            android:useDefaultMargins="true"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal" >
-
-            <Button
-                android:id="@+id/reserveButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingEnd="10dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:drawablePadding="4dp"
-                android:backgroundTint="@color/green"
-                android:drawableLeft="@drawable/arrow_circle_right_white_20"
-                android:onClick="timeSelect"
-                android:text="@string/next"
-                android:textColor="@android:color/white"
-                tools:ignore="DuplicateSpeakableTextCheck,RtlHardcoded,UsingOnClickInXml" />
-
-            <Button
-                android:id="@+id/logoutButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingEnd="10dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:drawablePadding="4dp"
-                android:backgroundTint="@color/green"
-                android:drawableLeft="@drawable/logout_white_20"
-                android:onClick="mainView"
-                android:text="@string/exit"
-                android:textColor="@android:color/white"
-                tools:ignore="DuplicateSpeakableTextCheck,RtlHardcoded,UsingOnClickInXml" />
-
-        </GridLayout>
-
-        <Button
-            android:id="@+id/loginButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingEnd="10dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:drawablePadding="4dp"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@color/green"
-            android:drawableLeft="@drawable/time_white_20"
-            android:text="@string/reservations"
-            android:onClick="reservations"
-            android:textColor="@color/white"
-            tools:ignore="RtlHardcoded,UsingOnClickInXml" />
-    </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/fragmentBookingContainer"
+    <!-- Scrollable container -->
+    <ScrollView
+        android:id="@+id/scrollContent"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <FrameLayout
-        android:id="@+id/fragmentReservationsContainer"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <!-- -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="32dp"
+            android:background="@android:color/white">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:id="@+id/bookingBlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/bookingHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/appointment_booking"
+                    android:drawableLeft="@drawable/time_green_32"
+                    android:drawablePadding="12dp"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/green"
+                    android:layout_marginBottom="30dp"
+                    tools:ignore="RtlHardcoded,UseCompatTextViewDrawableXml" />
+
+                <TextView
+                    android:id="@+id/officeHeader"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/government_offices"
+                    android:textSize="18sp"
+                    android:paddingStart="4dp"
+                    android:drawableStart="@drawable/place_gray_20"
+                    android:drawablePadding="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/systemName"
+                    tools:ignore="RtlSymmetry,UseCompatTextViewDrawableXml" />
+
+                <Spinner
+                    android:id="@+id/officeSpinner"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:minHeight="48dp"
+                    android:layout_marginBottom="16dp" />
+
+                <TextView
+                    android:id="@+id/officeWorkHeader"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/office_work"
+                    android:textSize="18sp"
+                    android:paddingStart="4dp"
+                    android:drawableStart="@drawable/event_seat_gray_20"
+                    android:drawablePadding="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/systemName"
+                    tools:ignore="RtlSymmetry,UseCompatTextViewDrawableXml" />
+
+                <Spinner
+                    android:id="@+id/serviceSpinner"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:minHeight="48dp"
+                    android:layout_marginBottom="16dp" />
+
+                <TextView
+                    android:id="@+id/dateHeader"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/date"
+                    android:textSize="18sp"
+                    android:paddingStart="4dp"
+                    android:drawableStart="@drawable/calendar_gray_20"
+                    android:drawablePadding="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/systemName"
+                    tools:ignore="RtlSymmetry,UseCompatTextViewDrawableXml" />
+
+                <EditText
+                    android:id="@+id/dateInput"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:autofillHints=""
+                    android:clickable="true"
+                    android:drawableEnd="@drawable/calendar_gray_20"
+                    android:drawablePadding="8dp"
+                    android:focusable="false"
+                    android:hint="@string/date_choice"
+                    android:inputType="none"
+                    android:padding="12dp"
+                    android:textColorHint="#757575"
+                    tools:ignore="KeyboardInaccessibleWidget,TextFields" />
+
+                <Button
+                    android:id="@+id/reserveButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="4dp"
+                    android:backgroundTint="@color/green"
+                    android:drawableLeft="@drawable/arrow_circle_right_white_20"
+                    android:onClick="timeSelect"
+                    android:text="@string/next"
+                    android:textColor="@android:color/white"
+                    tools:ignore="DuplicateSpeakableTextCheck,RtlHardcoded,UsingOnClickInXml" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

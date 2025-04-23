@@ -1,21 +1,22 @@
 package com.example.govcentralappointmentbooking;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import com.example.govcentralappointmentbooking.utils.Util;
 import java.util.ArrayList;
 import java.text.SimpleDateFormat;
@@ -67,6 +68,7 @@ public class BookingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking);
 
+        // Office select
         LinkedHashMap<String, String> officeMap = getStringOfficeHashMap();
         Spinner officeSpinner = findViewById(R.id.officeSpinner);
         officeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -90,6 +92,7 @@ public class BookingActivity extends AppCompatActivity {
         officeSpinner.setAdapter(adapterOffice);
 
 
+        // Service select
         LinkedHashMap<String, String> serviceMap = getStringServiceHashMap();
         Spinner serviceSpinner = findViewById(R.id.serviceSpinner);
         serviceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -112,7 +115,7 @@ public class BookingActivity extends AppCompatActivity {
                 android.R.layout.simple_spinner_dropdown_item, serviceNames);
         serviceSpinner.setAdapter(adapterService);
 
-
+        // Date input
         dateInput = findViewById(R.id.dateInput);
         dateInput.setOnClickListener(v -> {
 
@@ -151,39 +154,33 @@ public class BookingActivity extends AppCompatActivity {
             datePickerDialog.show();
         });
 
-        getSupportFragmentManager().addOnBackStackChangedListener(() -> {
+        // Menu
+        ImageButton menuButton = findViewById(R.id.menuButton);
+        menuButton.setOnClickListener(v -> {
+            @SuppressLint("InflateParams") View popupView =
+                    getLayoutInflater().inflate(R.layout.menu_popup_booking, null);
+            PopupWindow popupWindow = new PopupWindow(popupView,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    true);
+            popupWindow.showAsDropDown(v, 0, 50);
 
-            Fragment bookingFragment = getSupportFragmentManager()
-                    .findFragmentById(R.id.fragmentBookingContainer);
+            popupView.findViewById(R.id.menu_profile).setOnClickListener(view -> {
+                popupWindow.dismiss();
+                Util.startActivityWithAnimation(
+                        this, ProfileActivity.class);
+            });
 
-            Fragment reservationsFragment = getSupportFragmentManager()
-                    .findFragmentById(R.id.fragmentReservationsContainer);
+            popupView.findViewById(R.id.menu_reservations).setOnClickListener(view -> {
+                popupWindow.dismiss();
+                Util.startActivityWithAnimation(
+                        this, ReservationsActivity.class);
+            });
 
-            if (bookingFragment == null && reservationsFragment == null) {
-
-                View formMainBooking = findViewById(R.id.formMainBooking);
-                View fragmentBookingContainer = findViewById(R.id.fragmentBookingContainer);
-                View reservationsContainer = findViewById(R.id.fragmentReservationsContainer);
-
-                formMainBooking.setVisibility(View.VISIBLE);
-                fragmentBookingContainer.setVisibility(View.GONE);
-                reservationsContainer.setVisibility(View.GONE);
-
-                Animation inAnim = AnimationUtils
-                        .loadAnimation(this, R.anim.slide_in_left);
-                formMainBooking.startAnimation(inAnim);
-                formMainBooking.setVisibility(View.VISIBLE);
-
-                Animation outBookingAnim = AnimationUtils
-                        .loadAnimation(this, R.anim.slide_out_right);
-                fragmentBookingContainer.startAnimation(outBookingAnim);
-                fragmentBookingContainer.setVisibility(View.GONE);
-
-                Animation outReservationsAnim = AnimationUtils
-                        .loadAnimation(this, R.anim.slide_out_right);
-                fragmentBookingContainer.startAnimation(outReservationsAnim);
-                fragmentBookingContainer.setVisibility(View.GONE);
-            }
+            popupView.findViewById(R.id.menu_logout).setOnClickListener(view -> {
+                popupWindow.dismiss();
+                this.confirmExit();
+            });
         });
 
         Log.i(LOG_TAG, "onCreate");
@@ -236,7 +233,8 @@ public class BookingActivity extends AppCompatActivity {
             return;
         }
 
-        findViewById(R.id.formMainBooking).setVisibility(View.GONE);
+        /*
+        findViewById(R.id.bookingBlock).setVisibility(View.GONE);
         findViewById(R.id.fragmentBookingContainer).setVisibility(View.VISIBLE);
 
         Bundle args = new Bundle();
@@ -259,6 +257,8 @@ public class BookingActivity extends AppCompatActivity {
                 .replace(R.id.fragmentBookingContainer, fragment)
                 .addToBackStack(null)
                 .commit();
+
+         */
 
         Log.i(LOG_TAG, getString(R.string.appointment) + " " + getString(R.string.to_book) );
     }
@@ -333,7 +333,8 @@ public class BookingActivity extends AppCompatActivity {
 
     public void reservations(View view) {
 
-        findViewById(R.id.formMainBooking).setVisibility(View.GONE);
+        /*
+        findViewById(R.id.bookingBlock).setVisibility(View.GONE);
         findViewById(R.id.fragmentReservationsContainer).setVisibility(View.VISIBLE);
 
         ReservationsFragment fragment = new ReservationsFragment();
@@ -347,5 +348,7 @@ public class BookingActivity extends AppCompatActivity {
                 .replace(R.id.fragmentReservationsContainer, fragment)
                 .addToBackStack(null)
                 .commit();
+
+         */
     }
 }
