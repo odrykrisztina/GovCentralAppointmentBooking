@@ -124,6 +124,17 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.i(LOG_TAG, "onResume");
+        FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(Util.userUid)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    User user = documentSnapshot.toObject(User.class);
+                    if (user != null) {
+                        userNameInput.setText(user.userName);
+                        phoneInput.setText(user.phone);
+                    }
+                });
     }
 
     @Override

@@ -49,27 +49,23 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/dateText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/appointment"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
                     android:id="@+id/officeText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/office"
                     android:textSize="14sp"
                     android:textStyle="bold"
+                    android:paddingStart="4dp"
+                    android:paddingBottom="3dp"
+                    android:paddingTop="3dp"
+                    android:onClick="openOfficeMap"
                     app:layout_constraintEnd_toEndOf="parent"
+                    android:drawableStart="@drawable/place_red_20"
+                    android:background="@drawable/rounded_corner_view"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/dateText"
-                    app:layout_constraintTop_toBottomOf="parent" />
+                    app:layout_constraintTop_toBottomOf="parent"
+                    tools:ignore="RtlSymmetry,UseCompatTextViewDrawableXml,UsingOnClickInXml" />
 
                 <TextView
                     android:id="@+id/serviceText"
@@ -82,6 +78,17 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/officeText"
                     app:layout_constraintTop_toBottomOf="parent" />
+
+                <TextView
+                    android:id="@+id/dateText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/appointment"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <GridLayout
                     android:id="@+id/timeTableGrid"

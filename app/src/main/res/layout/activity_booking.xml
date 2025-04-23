@@ -46,7 +46,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                tools:ignore="ExtraText">
 
                 <TextView
                     android:id="@+id/bookingHeader"
@@ -63,21 +64,25 @@
 
                 <TextView
                     android:id="@+id/officeHeader"
-                    android:layout_width="300dp"
+                    android:layout_width="320dp"
                     android:layout_height="wrap_content"
                     android:text="@string/government_offices"
                     android:textSize="18sp"
                     android:paddingStart="4dp"
-                    android:drawableStart="@drawable/place_gray_20"
+                    android:paddingBottom="3dp"
+                    android:paddingTop="3dp"
+                    android:drawableStart="@drawable/place_red_20"
+                    android:background="@drawable/rounded_corner_view"
                     android:drawablePadding="8dp"
+                    android:onClick="openOfficeMap"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/systemName"
-                    tools:ignore="RtlSymmetry,UseCompatTextViewDrawableXml" />
+                    tools:ignore="RtlSymmetry,UseCompatTextViewDrawableXml,UsingOnClickInXml" />
 
                 <Spinner
                     android:id="@+id/officeSpinner"
-                    android:layout_width="300dp"
+                    android:layout_width="320dp"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
                     android:minHeight="48dp"
@@ -85,7 +90,7 @@
 
                 <TextView
                     android:id="@+id/officeWorkHeader"
-                    android:layout_width="300dp"
+                    android:layout_width="320dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/office_work"
@@ -100,7 +105,7 @@
 
                 <Spinner
                     android:id="@+id/serviceSpinner"
-                    android:layout_width="300dp"
+                    android:layout_width="320dp"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
                     android:minHeight="48dp"
@@ -108,7 +113,7 @@
 
                 <TextView
                     android:id="@+id/dateHeader"
-                    android:layout_width="300dp"
+                    android:layout_width="320dp"
                     android:layout_height="wrap_content"
                     android:text="@string/date"
                     android:textSize="18sp"
@@ -122,7 +127,7 @@
 
                 <EditText
                     android:id="@+id/dateInput"
-                    android:layout_width="300dp"
+                    android:layout_width="320dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="30dp"
                     android:autofillHints=""

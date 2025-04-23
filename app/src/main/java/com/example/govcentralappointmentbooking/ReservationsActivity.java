@@ -93,6 +93,7 @@ public class ReservationsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.i(LOG_TAG, "onResume");
+        loadUserReservations();
     }
 
     @Override

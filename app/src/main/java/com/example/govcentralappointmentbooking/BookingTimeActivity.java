@@ -3,7 +3,9 @@ package com.example.govcentralappointmentbooking;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -90,6 +92,47 @@ public class BookingTimeActivity extends AppCompatActivity {
         });
 
         Log.i(LOG_TAG, "onCreate");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(LOG_TAG, "onStart");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(LOG_TAG, "onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(LOG_TAG, "onDestroy");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(LOG_TAG, "onPause");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(LOG_TAG, "onResume");
+        if (Util.timeSelected != null) {
+            Util.timeSelected = null;
+            saveButton.setEnabled(false);
+            saveButton.setAlpha(0.6f);
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i(LOG_TAG, "onRestart");
     }
 
     private void loadBookingsFromFirestore() {
@@ -288,5 +331,23 @@ public class BookingTimeActivity extends AppCompatActivity {
                             "Foglalás sikertelen: " + e.getMessage(),
                             Toast.LENGTH_LONG).show();
                 });
+    }
+
+    public void openOfficeMap(View view) {
+        if (officeSelectedName == null || officeSelectedName.isEmpty()) {
+            Toast.makeText(this,
+                    "Előbb válassz egy hivatalt!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            Uri uri = Uri.parse("https://www.google.com/maps/search/?api=1&query=" +
+                    Uri.encode(officeSelectedName));
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(mapIntent);
+        } catch (Exception e) {
+            Toast.makeText(this, "Nem sikerült megnyitni a térképet: " +
+                    e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 }

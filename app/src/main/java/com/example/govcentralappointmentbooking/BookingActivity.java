@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -214,6 +215,11 @@ public class BookingActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.i(LOG_TAG, "onResume");
+        if (Util.userUid == null) {
+            Toast.makeText(this, "Kérem, jelentkezzen be!", Toast.LENGTH_LONG).show();
+            Util.startActivityWithAnimation(this, LoginActivity.class);
+            finish();
+        }
     }
 
     @Override
@@ -259,5 +265,23 @@ public class BookingActivity extends AppCompatActivity {
     public void reservations(View view) {
         Util.startActivityWithAnimation(
                 this, ReservationsActivity.class);
+    }
+
+    public void openOfficeMap(View view) {
+        if (officeSelectedName == null || officeSelectedName.isEmpty()) {
+            Toast.makeText(this,
+                    "Előbb válassz egy hivatalt!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            Uri uri = Uri.parse("https://www.google.com/maps/search/?api=1&query=" +
+                    Uri.encode(officeSelectedName));
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(mapIntent);
+        } catch (Exception e) {
+            Toast.makeText(this, "Nem sikerült megnyitni a térképet: " +
+                    e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 }
