@@ -3,6 +3,7 @@ package com.example.govcentralappointmentbooking;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -237,7 +238,13 @@ public class BookingActivity extends AppCompatActivity {
             return;
         }
 
-        Log.i(LOG_TAG, getString(R.string.appointment) + " " + getString(R.string.to_book) );
+        Intent intent = new Intent(this, BookingTimeActivity.class);
+        intent.putExtra("officeSelectedName", officeSelectedName);
+        intent.putExtra("officeSelectedKey", officeSelectedKey);
+        intent.putExtra("serviceSelectedName", serviceSelectedName);
+        intent.putExtra("serviceSelectedKey", serviceSelectedKey);
+        intent.putExtra("dateSelected", dateSelected);
+        startActivity(intent);
     }
 
     public void goBack(View view) {
@@ -302,8 +309,5 @@ public class BookingActivity extends AppCompatActivity {
                             "Foglalás sikertelen: " + e.getMessage(),
                             Toast.LENGTH_LONG).show();
                 });
-    }
-
-    public void reservations(View view) {
     }
 }
