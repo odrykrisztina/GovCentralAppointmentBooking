@@ -237,43 +237,12 @@ public class BookingActivity extends AppCompatActivity {
             return;
         }
 
-        /*
-        findViewById(R.id.bookingBlock).setVisibility(View.GONE);
-        findViewById(R.id.fragmentBookingContainer).setVisibility(View.VISIBLE);
-
-        Bundle args = new Bundle();
-        args.putString("dateSelected", dateSelected);
-        args.putString("officeSelectedName", officeSelectedName);
-        args.putString("officeSelectedKey", officeSelectedKey);
-        args.putString("serviceSelectedName", serviceSelectedName);
-        args.putString("serviceSelectedKey", serviceSelectedKey);
-
-        BookingFragment fragment = new BookingFragment();
-        fragment.setArguments(args);
-
-        getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(
-                        R.anim.slide_in_right,
-                        R.anim.slide_out_left,
-                        R.anim.slide_in_left,
-                        R.anim.slide_out_right
-                )
-                .replace(R.id.fragmentBookingContainer, fragment)
-                .addToBackStack(null)
-                .commit();
-
-         */
-
         Log.i(LOG_TAG, getString(R.string.appointment) + " " + getString(R.string.to_book) );
     }
 
     public void goBack(View view) {
         getSupportFragmentManager()
                 .popBackStack();
-    }
-
-    public void mainView(View view) {
-        confirmExit();
     }
 
     private void confirmExit() {
@@ -336,23 +305,5 @@ public class BookingActivity extends AppCompatActivity {
     }
 
     public void reservations(View view) {
-
-        /*
-        findViewById(R.id.bookingBlock).setVisibility(View.GONE);
-        findViewById(R.id.fragmentReservationsContainer).setVisibility(View.VISIBLE);
-
-        ReservationsFragment fragment = new ReservationsFragment();
-        getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(
-                        R.anim.slide_in_right,
-                        R.anim.slide_out_left,
-                        R.anim.slide_in_left,
-                        R.anim.slide_out_right
-                )
-                .replace(R.id.fragmentReservationsContainer, fragment)
-                .addToBackStack(null)
-                .commit();
-
-         */
     }
 }

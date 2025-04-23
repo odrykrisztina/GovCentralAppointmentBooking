@@ -2,6 +2,8 @@ package com.example.govcentralappointmentbooking;
 
 import com.example.govcentralappointmentbooking.utils.Util;
 import com.example.govcentralappointmentbooking.utils.Validator;
+
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,7 +45,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         ImageButton menuButton = findViewById(R.id.menuButton);
         menuButton.setOnClickListener(v -> {
-            View popupView = getLayoutInflater().inflate(R.layout.menu_popup_register, null);
+            @SuppressLint("InflateParams") View popupView =
+                    getLayoutInflater().inflate(R.layout.menu_popup_register, null);
             PopupWindow popupWindow = new PopupWindow(popupView,
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -182,13 +185,6 @@ public class RegisterActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                     }
                 });
-    }
-
-    public void mainView(View view) {
-        Util.userUid = null;
-        Util.userName = null;
-        Util.startActivityWithAnimation(
-                this, MainActivity.class);
     }
 
     public void loginView(View view) {
