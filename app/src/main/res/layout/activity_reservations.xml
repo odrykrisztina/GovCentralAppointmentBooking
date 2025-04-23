@@ -42,11 +42,40 @@
                 android:layout_weight="1" />
 
             <LinearLayout
-                android:id="@+id/bookingBlock"
+                android:id="@+id/reservationsBlock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/userName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/green"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp"/>
+
+                <TextView
+                    android:id="@+id/reservationsTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time_registers"
+                    android:textColor="@color/green"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <GridLayout
+                    android:id="@+id/reservationsTableGrid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alignmentMode="alignMargins"
+                    android:padding="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:columnCount="1" />
 
             </LinearLayout>
 
