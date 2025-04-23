@@ -12,6 +12,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.govcentralappointmentbooking.models.Booking;
 import com.example.govcentralappointmentbooking.utils.Util;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -64,6 +65,42 @@ public class ReservationsActivity extends AppCompatActivity {
         Log.i(LOG_TAG, "onCreate");
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(LOG_TAG, "onStart");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(LOG_TAG, "onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(LOG_TAG, "onDestroy");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(LOG_TAG, "onPause");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(LOG_TAG, "onResume");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i(LOG_TAG, "onRestart");
+    }
+
     private void loadUserReservations() {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -93,16 +130,16 @@ public class ReservationsActivity extends AppCompatActivity {
                     }
 
                     for (QueryDocumentSnapshot doc : querySnapshots) {
-                        String officeKey = doc.getString("officeKey");
-                        String serviceKey = doc.getString("serviceKey");
-                        String date = doc.getString("date");
-                        String time = doc.getString("time");
+                        Booking booking = doc.toObject(Booking.class);
 
-                        String officeName = officeMap.containsKey(officeKey) ? officeMap.get(officeKey) : "Ismeretlen hivatal";
-                        String serviceName = serviceMap.containsKey(serviceKey) ? serviceMap.get(serviceKey) : "Ismeretlen ügytípus";
+                        String officeName = officeMap.containsKey(booking.officeKey) ?
+                                officeMap.get(booking.officeKey) : "Ismeretlen hivatal";
 
-                        String text = "Dátum: " + date +
-                                "\nIdőpont: " + time +
+                        String serviceName = serviceMap.containsKey(booking.serviceKey) ?
+                                serviceMap.get(booking.serviceKey) : "Ismeretlen ügytípus";
+
+                        String text = "Dátum: " + booking.date +
+                                "\nIdőpont: " + booking.time +
                                 "\nHelyszín: " + officeName +
                                 "\nÜgytípus: " + serviceName;
 
@@ -117,7 +154,7 @@ public class ReservationsActivity extends AppCompatActivity {
                         tv.setLayoutParams(params);
 
                         try {
-                            Date bookingDate = sdf.parse(Objects.requireNonNull(date));
+                            Date bookingDate = sdf.parse(Objects.requireNonNull(booking.date));
                             if (bookingDate != null && !bookingDate.before(tomorrow.getTime())) {
                                 tv.setBackgroundResource(R.drawable.time_button_border_bold_blue);
                                 tv.setOnClickListener(v -> confirmDelete(doc.getId()));

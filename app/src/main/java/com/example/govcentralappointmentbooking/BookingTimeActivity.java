@@ -20,10 +20,9 @@ import com.example.govcentralappointmentbooking.utils.Util;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
+import com.example.govcentralappointmentbooking.models.Booking;
 
 public class BookingTimeActivity extends AppCompatActivity {
 
@@ -264,16 +263,16 @@ public class BookingTimeActivity extends AppCompatActivity {
 
     private void bookingSave() {
 
+        Booking booking = new Booking(
+                Util.userUid,
+                officeSelectedKey,
+                serviceSelectedKey,
+                dateSelected,
+                Util.timeSelected,
+                Timestamp.now()
+        );
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        Map<String, Object> booking = new HashMap<>();
-        booking.put("userUid", Util.userUid);
-        booking.put("officeKey", officeSelectedKey);
-        booking.put("serviceKey", serviceSelectedKey);
-        booking.put("date", dateSelected);
-        booking.put("time", Util.timeSelected);
-        booking.put("createdAt", Timestamp.now());
-
         db.collection("bookings")
                 .add(booking)
                 .addOnSuccessListener(documentReference -> {

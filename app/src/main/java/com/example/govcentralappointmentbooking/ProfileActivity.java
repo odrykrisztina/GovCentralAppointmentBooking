@@ -13,6 +13,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.govcentralappointmentbooking.models.User;
 import com.example.govcentralappointmentbooking.utils.Util;
 import com.example.govcentralappointmentbooking.utils.Validator;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +32,7 @@ public class ProfileActivity extends AppCompatActivity {
     private EditText newPasswordConfirmInput;
 
     private String originalPhone;
+    private String originalUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +54,14 @@ public class ProfileActivity extends AppCompatActivity {
                 .addOnSuccessListener(documentSnapshot -> {
 
                     if (documentSnapshot.exists()) {
-                        String email = documentSnapshot.getString("email");
-                        originalPhone = documentSnapshot.getString("phone");
-                        emailInput.setText(email);
-                        userNameInput.setText(Util.userName);
-                        phoneInput.setText(originalPhone);
+                        User user = documentSnapshot.toObject(User.class);
+                        if (user != null) {
+                            emailInput.setText(user.email);
+                            userNameInput.setText(user.userName);
+                            phoneInput.setText(user.phone);
+                            originalUserName = user.userName;
+                            originalPhone = user.phone;
+                        }
                     } else {
                         Toast.makeText(this,
                                 "Felhasználói adatok nem találhatók!",
@@ -203,17 +208,18 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void updateUserData(String userName, String phone) {
-        if (originalPhone.equals(phone) && userName.equals(Util.userName)) {
+        if (originalPhone.equals(phone) && userName.equals(originalUserName)) {
             Toast.makeText(this, "A profilt nem szükséges frissíteni!",
                     Toast.LENGTH_SHORT).show();
             overridePendingTransition(R.anim.fade_in, R.anim.slide_out_right);
             finish();
             return;
         }
+        User updatedUser = new User(userName, emailInput.getText().toString().trim(), phone);
         FirebaseFirestore.getInstance()
                 .collection("users")
                 .document(Util.userUid)
-                .update("userName", userName, "phone", phone)
+                .set(updatedUser)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Profil sikeresen frissítve!", Toast.LENGTH_SHORT).show();
                     Util.userName = userName;

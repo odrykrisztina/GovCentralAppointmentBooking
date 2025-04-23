@@ -1,5 +1,6 @@
 package com.example.govcentralappointmentbooking;
 
+import com.example.govcentralappointmentbooking.models.User;
 import com.example.govcentralappointmentbooking.utils.Util;
 import com.example.govcentralappointmentbooking.utils.Validator;
 import android.annotation.SuppressLint;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
@@ -17,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import android.view.inputmethod.InputMethodManager;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -121,8 +122,8 @@ public class LoginActivity extends AppCompatActivity {
                 .signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        Util.userUid = user != null ? user.getUid() : null;
+                        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                        Util.userUid = firebaseUser != null ? firebaseUser.getUid() : null;
 
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                         db.collection("users")
@@ -131,13 +132,13 @@ public class LoginActivity extends AppCompatActivity {
                                 .addOnSuccessListener(documentSnapshot -> {
 
                                     if (documentSnapshot.exists()) {
-                                        String userName = documentSnapshot.getString("userName");
-                                        Util.userName = userName;
+                                        User user = documentSnapshot.toObject(User.class);
+                                        Util.userName = user != null ? user.userName : null;
 
                                         new AlertDialog.Builder(this)
                                                 .setTitle("Sikeres bejelentkezés")
                                                 .setIcon(R.drawable.check_circle_green_24)
-                                                .setMessage("Üdvözöllek, " + userName + "!")
+                                                .setMessage("Üdvözöllek, " + Util.userName + "!")
                                                 .setPositiveButton("OK", (dialog, which) ->
                                                         Util.startActivityWithAnimation(
                                                                 this, BookingActivity.class))
@@ -159,7 +160,6 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                     }
                 });
-
     }
 
     public void registerView(View view) {

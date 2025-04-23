@@ -1,5 +1,6 @@
 package com.example.govcentralappointmentbooking;
 
+import com.example.govcentralappointmentbooking.models.User;
 import com.example.govcentralappointmentbooking.utils.Util;
 import com.example.govcentralappointmentbooking.utils.Validator;
 import android.annotation.SuppressLint;
@@ -17,10 +18,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import java.util.Objects;
 import com.google.firebase.firestore.FirebaseFirestore;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -150,20 +149,15 @@ public class RegisterActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        Map<String, Object> userData = new HashMap<>();
-                        userData.put("userName", userName);
-                        userData.put("email", email);
-                        userData.put("phone", phone);
+
+                        User userModel = new User(userName, email, phone);
 
                         db.collection("users")
                                 .document(Objects.requireNonNull(user).getUid())
-                                .set(userData)
+                                .set(userModel)
                                 .addOnSuccessListener(aVoid -> {
                                     Util.userUid = user.getUid();
                                     Util.userName = userName;
-                                    Log.d(LOG_TAG,
-                                            "Felhasználó Firestore-ban elmentve, azonosítója: "+
-                                                    Util.userUid);
 
                                     new AlertDialog.Builder(this)
                                             .setTitle("Sikeres regisztráció")
