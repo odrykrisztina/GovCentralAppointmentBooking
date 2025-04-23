@@ -10,13 +10,10 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.govcentralappointmentbooking.utils.Util;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-
 import java.util.Map;
 
 public class ReservationsActivity extends AppCompatActivity {
@@ -147,7 +144,7 @@ public class ReservationsActivity extends AppCompatActivity {
 
                     if (querySnapshots.isEmpty()) {
                         TextView tv = new TextView(this);
-                        tv.setText("Nincs korábbi foglalás.");
+                        tv.setText(R.string.no_reservation);
                         tv.setTextSize(16);
                         tv.setPadding(20, 20, 20, 20);
                         reservationsTableGrid.addView(tv);

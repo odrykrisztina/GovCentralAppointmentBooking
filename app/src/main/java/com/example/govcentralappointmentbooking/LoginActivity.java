@@ -2,7 +2,6 @@ package com.example.govcentralappointmentbooking;
 
 import com.example.govcentralappointmentbooking.utils.Util;
 import com.example.govcentralappointmentbooking.utils.Validator;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;

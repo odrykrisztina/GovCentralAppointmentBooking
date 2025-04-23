@@ -23,12 +23,9 @@ import com.example.govcentralappointmentbooking.utils.Util;
 import java.util.ArrayList;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.Timestamp;
 
 public class BookingActivity extends AppCompatActivity {
 
@@ -38,8 +35,6 @@ public class BookingActivity extends AppCompatActivity {
     private String officeSelectedKey;
     private String serviceSelectedName;
     private String serviceSelectedKey;
-    private String dateSelected;
-
     private EditText dateInput;
 
     @NonNull
@@ -229,7 +224,7 @@ public class BookingActivity extends AppCompatActivity {
 
     public void timeSelect(View view) {
 
-        dateSelected = dateInput.getText().toString().trim();
+        String dateSelected = dateInput.getText().toString().trim();
         if (dateSelected.isEmpty()) {
             Toast toast = Toast.makeText(BookingActivity.this,
                     "Időpontot kell vállasztani!", Toast.LENGTH_LONG);
@@ -247,11 +242,6 @@ public class BookingActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void goBack(View view) {
-        getSupportFragmentManager()
-                .popBackStack();
-    }
-
     private void confirmExit() {
         new AlertDialog.Builder(this)
                 .setTitle("Kilépés")
@@ -264,50 +254,5 @@ public class BookingActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("Mégse", null)
                 .show();
-    }
-
-    public void confirmSave(View view) {
-        new AlertDialog.Builder(this)
-                .setTitle("Időpont foglalás")
-                .setIcon(R.drawable.question_mark_blue_24)
-                .setMessage("Biztosan lefoglalod az időpontot?" +
-                            "\nKormányablak:\n" + officeSelectedName +
-                            "\nSzolgáltatás:\n" + serviceSelectedName +
-                            "\nDátum: " + dateSelected +
-                            "\nIdőpont: " + Util.timeSelected)
-                .setPositiveButton("Igen", (dialog, which) -> bookingSave())
-                .setNegativeButton("Mégse", null)
-                .show();
-    }
-
-    private void bookingSave() {
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        Map<String, Object> booking = new HashMap<>();
-        booking.put("userUid", Util.userUid);
-        booking.put("officeKey", officeSelectedKey);
-        booking.put("serviceKey", serviceSelectedKey);
-        booking.put("date", dateSelected);
-        booking.put("time", Util.timeSelected);
-        booking.put("createdAt", Timestamp.now());
-
-        db.collection("bookings")
-                .add(booking)
-                .addOnSuccessListener(documentReference -> {
-                    Log.i(LOG_TAG, "Foglalás elmentve Firestore-ba: " + documentReference.getId());
-
-                    // Visszalépünk, újra betöltheti a foglalásokat, stb.
-                    getSupportFragmentManager().popBackStack();
-                    Toast.makeText(this,
-                            "Foglalás sikeres!",
-                            Toast.LENGTH_LONG).show();
-                })
-                .addOnFailureListener(e -> {
-                    Log.e(LOG_TAG, "Hiba a foglalás mentésekor: ", e);
-                    Toast.makeText(this,
-                            "Foglalás sikertelen: " + e.getMessage(),
-                            Toast.LENGTH_LONG).show();
-                });
     }
 }
