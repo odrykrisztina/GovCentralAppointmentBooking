@@ -3,5 +3,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="green">#00796B</color>
+    <color name="blue">#0000ff</color>
+    <color name="red">#FF0000</color>
     <color name="dimGray">#696969</color>
+    <color name="lightGray">#F5F5F5</color>
 </resources>

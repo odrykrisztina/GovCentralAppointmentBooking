@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout mainBlock = findViewById(R.id.mainBlock);
         Animation bounceAnim = AnimationUtils.loadAnimation(this, R.anim.bounce_scale);
         mainBlock.startAnimation(bounceAnim);
+
+        Log.i(LOG_TAG, "onCreate");
     }
 
     @Override

@@ -66,11 +66,12 @@
                     android:drawableStart="@drawable/email_grey_20"
                     android:drawablePadding="8dp"
                     android:focusable="false"
-                    android:focusableInTouchMode="true"
+                    android:focusableInTouchMode="false"
                     android:hint="@string/email"
                     android:inputType="textEmailAddress"
                     android:minHeight="48dp"
                     android:textColorHint="@color/dimGray"
+                    android:background="@color/lightGray"
                     tools:ignore="TextContrastCheck" />
 
                 <EditText
@@ -134,7 +135,7 @@
                     android:textColorHint="@color/dimGray" />
 
                 <EditText
-                    android:id="@+id/passwordConfirmInput"
+                    android:id="@+id/newPasswordConfirmInput"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"

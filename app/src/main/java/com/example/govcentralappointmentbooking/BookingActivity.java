@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -164,6 +165,9 @@ public class BookingActivity extends AppCompatActivity {
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     true);
             popupWindow.showAsDropDown(v, 0, 50);
+
+            TextView userNameText = popupView.findViewById(R.id.userName);
+            userNameText.setText(Util.userName);
 
             popupView.findViewById(R.id.menu_profile).setOnClickListener(view -> {
                 popupWindow.dismiss();
