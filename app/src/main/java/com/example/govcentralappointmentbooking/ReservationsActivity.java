@@ -18,6 +18,7 @@ import com.example.govcentralappointmentbooking.utils.DataProvider;
 import com.example.govcentralappointmentbooking.models.Office;
 import com.example.govcentralappointmentbooking.models.Service;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -108,9 +109,13 @@ public class ReservationsActivity extends AppCompatActivity {
     private void loadUserReservations() {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
         db.collection("bookings")
                 .whereEqualTo("userUid", Util.userUid)
+                .orderBy("date", Query.Direction.DESCENDING)
+                .orderBy("time", Query.Direction.DESCENDING)
+                .orderBy("officeKey", Query.Direction.ASCENDING)
+                .orderBy("serviceKey", Query.Direction.ASCENDING)
+                .limit(100)
                 .get()
                 .addOnSuccessListener(querySnapshots -> {
 

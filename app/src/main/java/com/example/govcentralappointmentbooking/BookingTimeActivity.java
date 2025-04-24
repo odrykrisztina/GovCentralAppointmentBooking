@@ -34,6 +34,7 @@ import com.example.govcentralappointmentbooking.utils.OfficeUtils;
 import com.example.govcentralappointmentbooking.utils.Util;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -160,12 +161,13 @@ public class BookingTimeActivity extends AppCompatActivity {
     }
 
     private void loadBookingsFromFirestore() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("bookings")
                 .whereEqualTo("date", dateSelected)
                 .whereEqualTo("officeKey", selectedOffice.key)
                 .whereEqualTo("serviceKey", selectedService.key)
+                .limit(40)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     Set<String> blockedSlots = new HashSet<>();
