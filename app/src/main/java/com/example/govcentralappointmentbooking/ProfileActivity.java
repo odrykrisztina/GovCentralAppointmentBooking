@@ -238,4 +238,8 @@ public class ProfileActivity extends AppCompatActivity {
                         this, "Hiba a frissítéskor: " +
                                 e.getMessage(), Toast.LENGTH_LONG).show());
     }
+
+    public void goBack(View view) {
+        Util.finishWithAnimation(this);
+    }
 }

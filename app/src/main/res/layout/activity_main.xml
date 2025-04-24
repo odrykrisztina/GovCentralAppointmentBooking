@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/welcome"
                     android:textColor="@color/green"
-                    android:textSize="36sp"
+                    android:textSize="30sp"
                     android:textStyle="bold"
                     android:gravity="center" />
 
@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:text="@string/faster_processing"
-                    android:textSize="14sp"
+                    android:textSize="11sp"
                     android:gravity="center"
                     tools:ignore="VisualLintLongText" />
 

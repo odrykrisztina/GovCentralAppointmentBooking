@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
-            android:padding="32dp"
+            android:padding="20dp"
             android:background="@android:color/white">
 
             <Space
@@ -149,17 +149,42 @@
                     android:minHeight="48dp"
                     android:textColorHint="@color/dimGray" />
 
-                <Button
-                    android:id="@+id/registerButton"
-                    android:layout_width="wrap_content"
+                <GridLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="4dp"
-                    android:backgroundTint="@color/green"
-                    android:drawableLeft="@drawable/check_white_20"
-                    android:onClick="saveProfile"
-                    android:text="@string/save"
-                    android:textColor="@android:color/white"
-                    tools:ignore="DuplicateSpeakableTextCheck,RtlHardcoded,UsingOnClickInXml" />
+                    android:columnCount="2"
+                    android:rowCount="1"
+                    android:layout_marginTop="20dp">
+
+                    <Button
+                        android:id="@+id/saveButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/green"
+                        android:drawableLeft="@drawable/cloud_upload_white_20"
+                        android:onClick="saveProfile"
+                        android:text="@string/save"
+                        android:layout_marginHorizontal="5dp"
+                        android:textColor="@android:color/white"
+                        tools:ignore="RtlHardcoded,UsingOnClickInXml"
+                        android:layout_gravity="end"
+                        android:layout_columnWeight="1"/>
+
+                    <Button
+                        android:id="@+id/cancelButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/dimGray"
+                        android:drawableLeft="@drawable/cancel_white_20"
+                        android:onClick="goBack"
+                        android:text="@string/cancel"
+                        android:layout_marginHorizontal="5dp"
+                        android:textColor="@android:color/white"
+                        tools:ignore="RtlHardcoded,UsingOnClickInXml"
+                        android:layout_gravity="start"
+                        android:layout_columnWeight="1"/>
+
+                </GridLayout>
 
             </LinearLayout>
 

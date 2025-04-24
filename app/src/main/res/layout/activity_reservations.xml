@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
-            android:padding="32dp"
+            android:padding="10dp"
             android:background="@android:color/white">
 
             <Space
@@ -68,14 +68,51 @@
                     android:textStyle="bold"
                     android:layout_marginBottom="8dp"/>
 
+                <LinearLayout
+                    android:id="@+id/information"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/box_outline_blue_20"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/reservation_delete"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
                 <GridLayout
                     android:id="@+id/reservationsTableGrid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:alignmentMode="alignMargins"
+                    android:layout_marginTop="10dp"
                     android:padding="5dp"
-                    android:layout_marginBottom="10dp"
                     android:columnCount="1" />
+
+                <Button
+                    android:id="@+id/cancelButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/green"
+                    android:drawableLeft="@drawable/arrow_circle_left_white_20"
+                    android:onClick="goBack"
+                    android:text="@string/back"
+                    android:layout_marginHorizontal="2dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@android:color/white"
+                    tools:ignore="RtlHardcoded,UsingOnClickInXml"
+                    android:textAlignment="textEnd" />
 
             </LinearLayout>
 

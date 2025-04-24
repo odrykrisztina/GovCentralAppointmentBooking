@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,7 +35,6 @@ import com.example.govcentralappointmentbooking.utils.OfficeUtils;
 import com.example.govcentralappointmentbooking.utils.Util;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -192,6 +192,7 @@ public class BookingTimeActivity extends AppCompatActivity {
     }
 
     private void generateTimeTable(Set<String> blockedSlots, Set<String> mySlots) {
+
         Context ctx = this;
         timeTableGrid.removeAllViews();
 
@@ -201,6 +202,7 @@ public class BookingTimeActivity extends AppCompatActivity {
         }
 
         for (int hour : hours) {
+
             addLabelCell(ctx, hour + ":00");
             for (int min : minutes) {
                 @SuppressLint("DefaultLocale") String time = String.format("%02d:%02d", hour, min);
@@ -305,9 +307,11 @@ public class BookingTimeActivity extends AppCompatActivity {
     private void addLabelCell(Context ctx, String text) {
         TextView tv = new TextView(ctx);
         tv.setText(text);
+        tv.setTextSize(12);
         tv.setPadding(8, 8, 8, 8);
         tv.setTextColor(Color.BLACK);
         tv.setGravity(Gravity.CENTER);
+        tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
 
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
         params.width = 0;

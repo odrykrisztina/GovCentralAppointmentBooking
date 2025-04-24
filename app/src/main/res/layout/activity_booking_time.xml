@@ -59,7 +59,7 @@
                     android:paddingTop="3dp"
                     android:paddingBottom="3dp"
                     android:text="@string/office"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +70,7 @@
                     android:id="@+id/phoneText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="2dp"
                     android:background="@drawable/rounded_corner_view"
                     android:drawableStart="@drawable/phone_blue_20"
                     android:onClick="callOffice"
@@ -78,7 +78,7 @@
                     android:paddingTop="3dp"
                     android:paddingBottom="3dp"
                     android:text="@string/phone"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -86,68 +86,91 @@
                     app:layout_constraintTop_toTopOf="@+id/officeText"
                     tools:ignore="RtlSymmetry,UseCompatTextViewDrawableXml,UsingOnClickInXml,TouchTargetSizeCheck" />
 
-                <TextView
-                    android:id="@+id/serviceText"
-                    android:layout_width="wrap_content"
+                <GridLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/service"
-                    android:layout_marginTop="6dp"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/phoneText"
-                    app:layout_constraintTop_toBottomOf="parent" />
+                    android:columnCount="2"
+                    android:rowCount="1"
+                    android:paddingHorizontal="20dp"
+                    android:layout_marginTop="5dp">
 
-                <TextView
-                    android:id="@+id/dateText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/appointment"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/serviceText"
-                    app:layout_constraintTop_toBottomOf="parent" />
+                    <TextView
+                        android:id="@+id/serviceText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/service"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textAlignment="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/phoneText"
+                        app:layout_constraintTop_toBottomOf="parent"
+                        android:layout_columnWeight="1"/>
+
+                    <TextView
+                        android:id="@+id/dateText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/appointment"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textAlignment="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/serviceText"
+                        app:layout_constraintTop_toBottomOf="parent"
+                        android:layout_columnWeight="1"/>
+                </GridLayout>
 
                 <GridLayout
                     android:id="@+id/timeTableGrid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:alignmentMode="alignMargins"
-                    android:layout_marginTop="6dp"
                     android:columnCount="5"
                     android:rowCount="11"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:padding="5dp"
+                    android:layout_marginTop="10dp"
                     android:visibility="invisible" />
 
-                <Button
-                    android:id="@+id/saveButton"
-                    android:layout_width="wrap_content"
+                <GridLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minWidth="160dp"
-                    android:backgroundTint="@color/green"
-                    android:drawableLeft="@drawable/cloud_upload_white_20"
-                    android:onClick="confirmSave"
-                    android:text="@string/save"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@android:color/white"
-                    tools:ignore="RtlHardcoded,UsingOnClickInXml" />
+                    android:columnCount="2"
+                    android:rowCount="1"
+                    android:paddingHorizontal="20dp"
+                    android:layout_marginTop="20dp">
 
-                <Button
-                    android:id="@+id/cancelButton"
-                    android:layout_width="wrap_content"
-                    android:minWidth="160dp"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/dimGray"
-                    android:drawableLeft="@drawable/cancel_white_20"
-                    android:onClick="goBack"
-                    android:text="@string/cancel"
-                    android:textColor="@android:color/white"
-                    tools:ignore="RtlHardcoded,UsingOnClickInXml" />
+                    <Button
+                        android:id="@+id/saveButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/green"
+                        android:drawableLeft="@drawable/cloud_upload_white_20"
+                        android:onClick="confirmSave"
+                        android:text="@string/save"
+                        android:layout_marginHorizontal="5dp"
+                        android:textColor="@android:color/white"
+                        tools:ignore="RtlHardcoded,UsingOnClickInXml"
+                        android:layout_gravity="end"
+                        android:layout_columnWeight="1"/>
+
+                    <Button
+                        android:id="@+id/cancelButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/dimGray"
+                        android:drawableLeft="@drawable/cancel_white_20"
+                        android:onClick="goBack"
+                        android:text="@string/cancel"
+                        android:layout_marginHorizontal="5dp"
+                        android:textColor="@android:color/white"
+                        tools:ignore="RtlHardcoded,UsingOnClickInXml"
+                        android:layout_gravity="start"
+                        android:layout_columnWeight="1"/>
+                </GridLayout>
 
             </LinearLayout>
 

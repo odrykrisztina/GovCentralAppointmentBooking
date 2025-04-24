@@ -1,5 +1,6 @@
 package com.example.govcentralappointmentbooking;
 
+import static android.view.View.VISIBLE;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -145,6 +147,8 @@ public class ReservationsActivity extends AppCompatActivity {
                         return;
                     }
 
+                    boolean canBeDeleted = false;
+
                     for (QueryDocumentSnapshot doc : querySnapshots) {
                         Booking booking = doc.toObject(Booking.class);
 
@@ -162,7 +166,7 @@ public class ReservationsActivity extends AppCompatActivity {
                         TextView tv = new TextView(this);
                         tv.setText(text);
                         tv.setPadding(24, 24, 24, 24);
-                        tv.setTextSize(14);
+                        tv.setTextSize(12);
 
                         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                         params.width = GridLayout.LayoutParams.MATCH_PARENT;
@@ -174,6 +178,7 @@ public class ReservationsActivity extends AppCompatActivity {
                             if (bookingDate != null && !bookingDate.before(tomorrow.getTime())) {
                                 tv.setBackgroundResource(R.drawable.time_button_border_bold_blue);
                                 tv.setOnClickListener(v -> confirmDelete(doc.getId()));
+                                canBeDeleted = true;
                             } else {
                                 tv.setBackgroundResource(R.drawable.time_button_border);
                             }
@@ -190,6 +195,11 @@ public class ReservationsActivity extends AppCompatActivity {
                         tv.setTextSize(16);
                         tv.setPadding(20, 20, 20, 20);
                         reservationsTableGrid.addView(tv);
+                    }
+
+                    if (canBeDeleted) {
+                        LinearLayout info = findViewById(R.id.information);
+                        info.setVisibility(VISIBLE);
                     }
                 })
                 .addOnFailureListener(e ->
@@ -221,5 +231,9 @@ public class ReservationsActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Toast.makeText(this,
                         "Hiba törlés közben: " + e.getMessage(),
                         Toast.LENGTH_LONG).show());
+    }
+
+    public void goBack(View view) {
+        Util.finishWithAnimation(this);
     }
 }

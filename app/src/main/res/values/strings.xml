@@ -45,4 +45,5 @@
     <string name="new_password_confirm">Új jelszó megerősítése</string>
     <string name="no_previous_bookings">Nincs korábbi foglalás.</string>
     <string name="no_reservation">Nincs korábbi foglalás.</string>
+    <string name="reservation_delete">kerettel rendelkező foglalás törölhető!</string>
 </resources>
