@@ -1,14 +1,15 @@
 package com.example.govcentralappointmentbooking;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,11 +30,16 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import com.example.govcentralappointmentbooking.models.Office;
 import com.example.govcentralappointmentbooking.models.Service;
+import com.example.govcentralappointmentbooking.utils.OfficeUtils;
 import com.example.govcentralappointmentbooking.utils.Util;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 import com.example.govcentralappointmentbooking.models.Booking;
 
@@ -105,8 +111,7 @@ public class BookingTimeActivity extends AppCompatActivity {
 
             popupView.findViewById(R.id.menu_back).setOnClickListener(view -> {
                 popupWindow.dismiss();
-                overridePendingTransition(R.anim.fade_in, R.anim.slide_out_right);
-                finish();
+                Util.finishWithAnimation(this);
             });
         });
 
@@ -229,6 +234,7 @@ public class BookingTimeActivity extends AppCompatActivity {
                 timeTableGrid.addView(btn);
             }
         }
+        timeTableGrid.setVisibility(View.VISIBLE);
     }
 
     private void handleOwnBooking(Button btn) {
@@ -343,8 +349,8 @@ public class BookingTimeActivity extends AppCompatActivity {
                             "Foglalás sikeres!",
                             Toast.LENGTH_LONG).show();
                     showNotification();
-                    overridePendingTransition(R.anim.fade_in, R.anim.slide_out_right);
-                    finish();
+                    scheduleReminder();
+                    Util.finishWithAnimation(this);
                 })
                 .addOnFailureListener(e -> {
                     Log.e(LOG_TAG, "Hiba a foglalás mentésekor: ", e);
@@ -352,6 +358,10 @@ public class BookingTimeActivity extends AppCompatActivity {
                             "Foglalás sikertelen: " + e.getMessage(),
                             Toast.LENGTH_LONG).show();
                 });
+    }
+
+    public void goBack(View view) {
+        Util.finishWithAnimation(this);
     }
 
     private void showNotification() {
@@ -367,71 +377,71 @@ public class BookingTimeActivity extends AppCompatActivity {
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(R.drawable.check_circle_green_24)
+                .setSmallIcon(android.R.drawable.ic_dialog_info)
                 .setContentTitle("Foglalás rögzítve")
-                .setContentText("Időpont: " + dateSelected + " " + Util.timeSelected +
-                        " – " + selectedOffice.name + " – " + selectedService.name)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(
+                        "Időpont: " + dateSelected + " " + Util.timeSelected +
+                                "\nKormányablak: " + selectedOffice.name +
+                                "\nSzolgáltatás: " + selectedService.name))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true);
 
         manager.notify(1001, builder.build());
     }
 
     public void openOfficeMap(View view) {
-        if (selectedOffice == null ||
-                selectedOffice.name == null ||
-                selectedOffice.name.isEmpty()) {
-            Toast.makeText(this,
-                    "Előbb válassz egy hivatalt!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        try {
-            Uri uri = Uri.parse("https://www.google.com/maps/search/?api=1&query=" +
-                    Uri.encode(selectedOffice.name));
-            Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(mapIntent);
-        } catch (Exception e) {
-            Toast.makeText(this, "Nem sikerült megnyitni a térképet: " +
-                    e.getMessage(), Toast.LENGTH_LONG).show();
-        }
+        OfficeUtils.openMap(this, selectedOffice);
     }
 
     public void callOffice(View view) {
-        if (selectedOffice == null || selectedOffice.phone == null) {
-            Toast.makeText(this, "Nincs telefonszám!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL_PERMISSION);
-        } else {
-            startCall();
-        }
-    }
-
-    private void startCall() {
-        Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse("tel:" + selectedOffice.phone));
-        startActivity(intent);
-    }
-
-    public void goBack(View view) {
-        overridePendingTransition(R.anim.fade_in, R.anim.slide_out_right);
-        finish();
+        OfficeUtils.call(this, selectedOffice, REQUEST_CALL_PERMISSION);
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CALL_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startCall();
+                new AlertDialog.Builder(this)
+                        .setTitle("Telefonhívás")
+                        .setMessage("Biztosan felhívod a kiválasztott hivatalt?")
+                        .setPositiveButton("Igen", (dialog, which) ->
+                                OfficeUtils.startCall(this, selectedOffice))
+                        .setNegativeButton("Mégse", null)
+                        .show();
             } else {
                 Toast.makeText(this, "Hívási engedély megtagadva!", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    @SuppressLint("ScheduleExactAlarm")
+    private void scheduleReminder() {
+
+        Calendar calendar = Calendar.getInstance();
+
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+            Date reminderTime = sdf.parse(dateSelected + " " + Util.timeSelected);
+            if (reminderTime == null) return;
+
+            calendar.setTime(reminderTime);
+            calendar.add(Calendar.DAY_OF_YEAR, -1); // 1 nappal korábban
+            calendar.set(Calendar.HOUR_OF_DAY, 9);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+
+            Intent intent = new Intent(this, ReminderReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                    this, 0, intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            }
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "Emlékeztető ütemezése sikertelen", e);
         }
     }
 }

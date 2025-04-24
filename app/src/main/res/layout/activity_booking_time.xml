@@ -121,7 +121,8 @@
                     android:rowCount="11"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:padding="5dp" />
+                    android:padding="5dp"
+                    android:visibility="invisible" />
 
                 <Button
                     android:id="@+id/saveButton"
@@ -145,7 +146,6 @@
                     android:drawableLeft="@drawable/cancel_white_20"
                     android:onClick="goBack"
                     android:text="@string/cancel"
-                    android:layout_marginTop="5dp"
                     android:textColor="@android:color/white"
                     tools:ignore="RtlHardcoded,UsingOnClickInXml" />
 

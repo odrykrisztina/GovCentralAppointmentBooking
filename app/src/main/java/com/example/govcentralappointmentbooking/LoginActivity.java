@@ -118,6 +118,9 @@ public class LoginActivity extends AppCompatActivity {
             imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
         }
 
+        Toast.makeText(this, "Felhasználói adatok ellenőrzés...",
+                Toast.LENGTH_SHORT).show();
+
         FirebaseAuth.getInstance()
                 .signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {

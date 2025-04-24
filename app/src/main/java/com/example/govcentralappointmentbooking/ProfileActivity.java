@@ -88,8 +88,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             popupView.findViewById(R.id.menu_back).setOnClickListener(view -> {
                 popupWindow.dismiss();
-                overridePendingTransition(R.anim.fade_in, R.anim.slide_out_right);
-                finish();
+                Util.finishWithAnimation(this);
             });
         });
 
@@ -222,8 +221,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (originalPhone.equals(phone) && userName.equals(originalUserName)) {
             Toast.makeText(this, "A profilt nem szükséges frissíteni!",
                     Toast.LENGTH_SHORT).show();
-            overridePendingTransition(R.anim.fade_in, R.anim.slide_out_right);
-            finish();
+            Util.finishWithAnimation(this);
             return;
         }
         User updatedUser = new User(userName, emailInput.getText().toString().trim(), phone);
@@ -234,8 +232,7 @@ public class ProfileActivity extends AppCompatActivity {
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Profil sikeresen frissítve!", Toast.LENGTH_SHORT).show();
                     Util.userName = userName;
-                    overridePendingTransition(R.anim.fade_in, R.anim.slide_out_right);
-                    finish();
+                    Util.finishWithAnimation(this);
                 })
                 .addOnFailureListener(e -> Toast.makeText(
                         this, "Hiba a frissítéskor: " +

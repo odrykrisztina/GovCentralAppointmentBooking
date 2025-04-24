@@ -61,8 +61,7 @@ public class ReservationsActivity extends AppCompatActivity {
 
             popupView.findViewById(R.id.menu_back).setOnClickListener(view -> {
                 popupWindow.dismiss();
-                overridePendingTransition(R.anim.fade_in, R.anim.slide_out_right);
-                finish();
+                Util.finishWithAnimation(this);
             });
         });
 

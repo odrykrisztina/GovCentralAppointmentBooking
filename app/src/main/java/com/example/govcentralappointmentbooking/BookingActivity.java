@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -19,12 +18,10 @@ import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.Manifest;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import com.example.govcentralappointmentbooking.models.Service;
+import com.example.govcentralappointmentbooking.utils.OfficeUtils;
 import com.example.govcentralappointmentbooking.utils.Util;
 import com.example.govcentralappointmentbooking.utils.DataProvider;
 import com.example.govcentralappointmentbooking.models.Office;
@@ -186,8 +183,7 @@ public class BookingActivity extends AppCompatActivity {
         Log.i(LOG_TAG, "onResume");
         if (Util.userUid == null) {
             Toast.makeText(this, "Kérem, jelentkezzen be!", Toast.LENGTH_LONG).show();
-            Util.startActivityWithAnimation(this, LoginActivity.class);
-            finish();
+            Util.finishWithAnimation(this);
         }
     }
 
@@ -235,44 +231,11 @@ public class BookingActivity extends AppCompatActivity {
     }
 
     public void openOfficeMap(View view) {
-        if (selectedOffice == null ||
-                selectedOffice.name == null ||
-                selectedOffice.name.isEmpty()) {
-            Toast.makeText(this,
-                    "Előbb válassz egy hivatalt!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        try {
-            Uri uri = Uri.parse("https://www.google.com/maps/search/?api=1&query=" +
-                    Uri.encode(selectedOffice.name));
-            Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(mapIntent);
-        } catch (Exception e) {
-            Toast.makeText(this, "Nem sikerült megnyitni a térképet: " +
-                    e.getMessage(), Toast.LENGTH_LONG).show();
-        }
+        OfficeUtils.openMap(this, selectedOffice);
     }
 
     public void callOffice(View view) {
-        if (selectedOffice == null || selectedOffice.phone == null) {
-            Toast.makeText(this, "Nincs telefonszám!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL_PERMISSION);
-        } else {
-            startCall();
-        }
-    }
-
-    private void startCall() {
-        Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse("tel:" + selectedOffice.phone));
-        startActivity(intent);
+        OfficeUtils.call(this, selectedOffice, REQUEST_CALL_PERMISSION);
     }
 
     @Override
@@ -280,7 +243,13 @@ public class BookingActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CALL_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startCall();
+                new AlertDialog.Builder(this)
+                        .setTitle("Telefonhívás")
+                        .setMessage("Biztosan felhívod a kiválasztott hivatalt?")
+                        .setPositiveButton("Igen", (dialog, which) ->
+                                OfficeUtils.startCall(this, selectedOffice))
+                        .setNegativeButton("Mégse", null)
+                        .show();
             } else {
                 Toast.makeText(this, "Hívási engedély megtagadva!", Toast.LENGTH_SHORT).show();
             }
