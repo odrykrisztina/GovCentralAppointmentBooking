@@ -2,11 +2,14 @@ package com.example.govcentralappointmentbooking;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -22,6 +25,7 @@ import android.Manifest;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import com.example.govcentralappointmentbooking.models.Office;
 import com.example.govcentralappointmentbooking.models.Service;
@@ -76,6 +80,14 @@ public class BookingTimeActivity extends AppCompatActivity {
         dateText.setText(dateSelected);
 
         loadBookingsFromFirestore();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1002);
+            }
+        }
 
         // Menu
         ImageButton menuButton = findViewById(R.id.menuButton);
@@ -330,6 +342,7 @@ public class BookingTimeActivity extends AppCompatActivity {
                     Toast.makeText(this,
                             "Foglalás sikeres!",
                             Toast.LENGTH_LONG).show();
+                    showNotification();
                     overridePendingTransition(R.anim.fade_in, R.anim.slide_out_right);
                     finish();
                 })
@@ -339,6 +352,29 @@ public class BookingTimeActivity extends AppCompatActivity {
                             "Foglalás sikertelen: " + e.getMessage(),
                             Toast.LENGTH_LONG).show();
                 });
+    }
+
+    private void showNotification() {
+        String channelId = "booking_channel_id";
+        String channelName = "Foglalások";
+
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT);
+            manager.createNotificationChannel(channel);
+        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(R.drawable.check_circle_green_24)
+                .setContentTitle("Foglalás rögzítve")
+                .setContentText("Időpont: " + dateSelected + " " + Util.timeSelected +
+                        " – " + selectedOffice.name + " – " + selectedService.name)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true);
+
+        manager.notify(1001, builder.build());
     }
 
     public void openOfficeMap(View view) {
@@ -382,6 +418,11 @@ public class BookingTimeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void goBack(View view) {
+        overridePendingTransition(R.anim.fade_in, R.anim.slide_out_right);
+        finish();
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -392,10 +433,5 @@ public class BookingTimeActivity extends AppCompatActivity {
                 Toast.makeText(this, "Hívási engedély megtagadva!", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    public void goBack(View view) {
-        overridePendingTransition(R.anim.fade_in, R.anim.slide_out_right);
-        finish();
     }
 }
