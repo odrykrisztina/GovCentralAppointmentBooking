@@ -62,23 +62,53 @@
                     android:layout_marginBottom="30dp"
                     tools:ignore="RtlHardcoded,UseCompatTextViewDrawableXml" />
 
-                <TextView
-                    android:id="@+id/officeHeader"
+                <GridLayout
                     android:layout_width="320dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/government_offices"
-                    android:textSize="18sp"
-                    android:paddingStart="4dp"
-                    android:paddingBottom="3dp"
-                    android:paddingTop="3dp"
-                    android:drawableStart="@drawable/place_red_20"
-                    android:background="@drawable/rounded_corner_view"
-                    android:drawablePadding="8dp"
-                    android:onClick="openOfficeMap"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/systemName"
-                    tools:ignore="RtlSymmetry,UseCompatTextViewDrawableXml,UsingOnClickInXml" />
+                    android:columnCount="2"
+                    android:rowCount="1">
+
+                    <TextView
+                        android:id="@+id/officePlace"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_corner_view"
+                        android:drawableStart="@drawable/place_red_20"
+                        android:drawablePadding="8dp"
+                        android:onClick="openOfficeMap"
+                        android:paddingStart="4dp"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
+                        android:paddingEnd="10dp"
+                        android:text="@string/government_offices"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/systemName"
+                        tools:ignore="RtlSymmetry,UseCompatTextViewDrawableXml,UsingOnClickInXml,TouchTargetSizeCheck" />
+
+                    <TextView
+                        android:id="@+id/phoneText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_corner_view"
+                        android:drawableStart="@drawable/phone_blue_20"
+                        android:drawablePadding="8dp"
+                        android:onClick="callOffice"
+                        android:paddingStart="4dp"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
+                        android:paddingEnd="10dp"
+                        android:layout_marginEnd="20dp"
+                        android:text="@string/phone"
+                        android:textSize="18sp"
+                        android:textAlignment="textEnd"
+                        android:layout_gravity="end"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/systemName"
+                        tools:ignore="RtlSymmetry,UseCompatTextViewDrawableXml,UsingOnClickInXml,TouchTargetSizeCheck" />
+                </GridLayout>
 
                 <Spinner
                     android:id="@+id/officeSpinner"

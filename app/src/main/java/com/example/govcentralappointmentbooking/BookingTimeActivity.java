@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,7 +18,13 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.Manifest;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import com.example.govcentralappointmentbooking.models.Office;
+import com.example.govcentralappointmentbooking.models.Service;
 import com.example.govcentralappointmentbooking.utils.Util;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,10 +37,10 @@ public class BookingTimeActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = BookingTimeActivity.class.getName();
 
-    private String officeSelectedName;
-    private String officeSelectedKey;
-    private String serviceSelectedName;
-    private String serviceSelectedKey;
+    private static final int REQUEST_CALL_PERMISSION = 1;
+
+    private Office selectedOffice;
+    private Service selectedService;
     private String dateSelected;
 
     private GridLayout timeTableGrid;
@@ -53,20 +60,20 @@ public class BookingTimeActivity extends AppCompatActivity {
         saveButton.setAlpha(0.6f);
         Util.timeSelected = null;
 
-        officeSelectedName = getIntent().getStringExtra("officeSelectedName");
-        officeSelectedKey = getIntent().getStringExtra("officeSelectedKey");
-        serviceSelectedName = getIntent().getStringExtra("serviceSelectedName");
-        serviceSelectedKey = getIntent().getStringExtra("serviceSelectedKey");
+        selectedOffice = (Office) getIntent().getSerializableExtra("selectedOffice");
+        selectedService = (Service) getIntent().getSerializableExtra("selectedService");
         dateSelected = getIntent().getStringExtra("dateSelected");
 
-        TextView dateText = findViewById(R.id.dateText);
         TextView officeText = findViewById(R.id.officeText);
+        TextView phoneText = findViewById(R.id.phoneText);
         TextView serviceText = findViewById(R.id.serviceText);
+        TextView dateText = findViewById(R.id.dateText);
         timeTableGrid = findViewById(R.id.timeTableGrid);
 
+        officeText.setText(selectedOffice.name);
+        phoneText.setText(selectedOffice.phone);
+        serviceText.setText(selectedService.name);
         dateText.setText(dateSelected);
-        officeText.setText(officeSelectedName);
-        serviceText.setText(serviceSelectedName);
 
         loadBookingsFromFirestore();
 
@@ -140,8 +147,8 @@ public class BookingTimeActivity extends AppCompatActivity {
 
         db.collection("bookings")
                 .whereEqualTo("date", dateSelected)
-                .whereEqualTo("officeKey", officeSelectedKey)
-                .whereEqualTo("serviceKey", serviceSelectedKey)
+                .whereEqualTo("officeKey", selectedOffice.key)
+                .whereEqualTo("serviceKey", selectedService.key)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     Set<String> blockedSlots = new HashSet<>();
@@ -230,15 +237,16 @@ public class BookingTimeActivity extends AppCompatActivity {
         db.collection("bookings")
                 .whereEqualTo("userUid", Util.userUid)
                 .whereEqualTo("date", dateSelected)
-                .whereEqualTo("officeKey", officeSelectedKey)
-                .whereEqualTo("serviceKey", serviceSelectedKey)
+                .whereEqualTo("officeKey", selectedOffice.key)
+                .whereEqualTo("serviceKey", selectedService.key)
                 .whereEqualTo("time", time)
                 .get()
                 .addOnSuccessListener(querySnapshots -> {
                     for (QueryDocumentSnapshot doc : querySnapshots) {
                         doc.getReference().delete();
                     }
-                    Toast.makeText(this, "Foglalás törölve: " + time, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Foglalás törölve: " +
+                            time, Toast.LENGTH_SHORT).show();
                     loadBookingsFromFirestore();
                 })
                 .addOnFailureListener(e -> Toast.makeText(this,
@@ -295,8 +303,8 @@ public class BookingTimeActivity extends AppCompatActivity {
                 .setTitle("Időpont foglalás")
                 .setIcon(R.drawable.question_mark_blue_24)
                 .setMessage("Biztosan lefoglalod az időpontot?" +
-                        "\nKormányablak:\n" + officeSelectedName +
-                        "\nSzolgáltatás:\n" + serviceSelectedName +
+                        "\nKormányablak:\n" + selectedOffice.name +
+                        "\nSzolgáltatás:\n" + selectedService.name +
                         "\nDátum: " + dateSelected +
                         "\nIdőpont: " + Util.timeSelected)
                 .setPositiveButton("Igen", (dialog, which) -> bookingSave())
@@ -308,8 +316,8 @@ public class BookingTimeActivity extends AppCompatActivity {
 
         Booking booking = new Booking(
                 Util.userUid,
-                officeSelectedKey,
-                serviceSelectedKey,
+                selectedOffice.key,
+                selectedService.key,
                 dateSelected,
                 Util.timeSelected,
                 Timestamp.now()
@@ -334,7 +342,9 @@ public class BookingTimeActivity extends AppCompatActivity {
     }
 
     public void openOfficeMap(View view) {
-        if (officeSelectedName == null || officeSelectedName.isEmpty()) {
+        if (selectedOffice == null ||
+                selectedOffice.name == null ||
+                selectedOffice.name.isEmpty()) {
             Toast.makeText(this,
                     "Előbb válassz egy hivatalt!", Toast.LENGTH_SHORT).show();
             return;
@@ -342,12 +352,50 @@ public class BookingTimeActivity extends AppCompatActivity {
 
         try {
             Uri uri = Uri.parse("https://www.google.com/maps/search/?api=1&query=" +
-                    Uri.encode(officeSelectedName));
+                    Uri.encode(selectedOffice.name));
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(mapIntent);
         } catch (Exception e) {
             Toast.makeText(this, "Nem sikerült megnyitni a térképet: " +
                     e.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void callOffice(View view) {
+        if (selectedOffice == null || selectedOffice.phone == null) {
+            Toast.makeText(this, "Nincs telefonszám!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL_PERMISSION);
+        } else {
+            startCall();
+        }
+    }
+
+    private void startCall() {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + selectedOffice.phone));
+        startActivity(intent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CALL_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startCall();
+            } else {
+                Toast.makeText(this, "Hívási engedély megtagadva!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public void goBack(View view) {
+        overridePendingTransition(R.anim.fade_in, R.anim.slide_out_right);
+        finish();
     }
 }

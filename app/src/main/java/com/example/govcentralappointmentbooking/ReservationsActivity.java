@@ -14,6 +14,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.govcentralappointmentbooking.models.Booking;
 import com.example.govcentralappointmentbooking.utils.Util;
+import com.example.govcentralappointmentbooking.utils.DataProvider;
+import com.example.govcentralappointmentbooking.models.Office;
+import com.example.govcentralappointmentbooking.models.Service;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.text.ParseException;
@@ -22,6 +25,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class ReservationsActivity extends AppCompatActivity {
@@ -114,8 +118,15 @@ public class ReservationsActivity extends AppCompatActivity {
                     reservationsTableGrid.removeAllViews();
                     userNameText.setText(Util.userName);
 
-                    Map<String, String> officeMap = BookingActivity.getStringOfficeHashMap();
-                    Map<String, String> serviceMap = BookingActivity.getStringServiceHashMap();
+                    Map<String, String> officeMap = new HashMap<>();
+                    for (Office office : DataProvider.getOfficeList()) {
+                        officeMap.put(office.key, office.name);
+                    }
+
+                    Map<String, String> serviceMap = new HashMap<>();
+                    for (Service service : DataProvider.getServiceList()) {
+                        serviceMap.put(service.key, service.name);
+                    }
 
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                     Calendar tomorrow = Calendar.getInstance();

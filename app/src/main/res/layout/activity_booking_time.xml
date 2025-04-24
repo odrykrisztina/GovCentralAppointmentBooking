@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
-            android:padding="32dp"
+            android:padding="5dp"
             android:background="@android:color/white">
 
             <Space
@@ -52,31 +52,51 @@
                     android:id="@+id/officeText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_corner_view"
+                    android:drawableStart="@drawable/place_red_20"
+                    android:onClick="openOfficeMap"
+                    android:paddingStart="4dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
                     android:text="@string/office"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:paddingStart="4dp"
-                    android:paddingBottom="3dp"
-                    android:paddingTop="3dp"
-                    android:onClick="openOfficeMap"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:drawableStart="@drawable/place_red_20"
-                    android:background="@drawable/rounded_corner_view"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/dateText"
                     app:layout_constraintTop_toBottomOf="parent"
-                    tools:ignore="RtlSymmetry,UseCompatTextViewDrawableXml,UsingOnClickInXml" />
+                    tools:ignore="RtlSymmetry,UseCompatTextViewDrawableXml,UsingOnClickInXml,TouchTargetSizeCheck" />
+
+                <TextView
+                    android:id="@+id/phoneText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/rounded_corner_view"
+                    android:drawableStart="@drawable/phone_blue_20"
+                    android:onClick="callOffice"
+                    android:paddingStart="4dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:text="@string/phone"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/officeText"
+                    tools:ignore="RtlSymmetry,UseCompatTextViewDrawableXml,UsingOnClickInXml,TouchTargetSizeCheck" />
 
                 <TextView
                     android:id="@+id/serviceText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/service"
+                    android:layout_marginTop="6dp"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/officeText"
+                    app:layout_constraintTop_toTopOf="@+id/phoneText"
                     app:layout_constraintTop_toBottomOf="parent" />
 
                 <TextView
@@ -88,7 +108,8 @@
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@+id/serviceText"
+                    app:layout_constraintTop_toBottomOf="parent" />
 
                 <GridLayout
                     android:id="@+id/timeTableGrid"
@@ -100,17 +121,31 @@
                     android:rowCount="11"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:padding="10dp" />
+                    android:padding="5dp" />
 
                 <Button
                     android:id="@+id/saveButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:minWidth="160dp"
                     android:backgroundTint="@color/green"
                     android:drawableLeft="@drawable/cloud_upload_white_20"
                     android:onClick="confirmSave"
                     android:text="@string/save"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@android:color/white"
+                    tools:ignore="RtlHardcoded,UsingOnClickInXml" />
+
+                <Button
+                    android:id="@+id/cancelButton"
+                    android:layout_width="wrap_content"
+                    android:minWidth="160dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/dimGray"
+                    android:drawableLeft="@drawable/cancel_white_20"
+                    android:onClick="goBack"
+                    android:text="@string/cancel"
+                    android:layout_marginTop="5dp"
                     android:textColor="@android:color/white"
                     tools:ignore="RtlHardcoded,UsingOnClickInXml" />
 

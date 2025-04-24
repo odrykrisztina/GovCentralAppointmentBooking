@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,47 +19,29 @@ import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.Manifest;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import com.example.govcentralappointmentbooking.models.Service;
 import com.example.govcentralappointmentbooking.utils.Util;
-import java.util.ArrayList;
+import com.example.govcentralappointmentbooking.utils.DataProvider;
+import com.example.govcentralappointmentbooking.models.Office;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class BookingActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = LoginActivity.class.getName();
 
-    private String officeSelectedName;
-    private String officeSelectedKey;
-    private String serviceSelectedName;
-    private String serviceSelectedKey;
+    private static final int REQUEST_CALL_PERMISSION = 1;
+
+    private Office selectedOffice;
+    private Service selectedService;
     private EditText dateInput;
-
-    @NonNull
-    static LinkedHashMap<String, String> getStringOfficeHashMap() {
-        LinkedHashMap<String, String> officeMap = new LinkedHashMap<>();
-        officeMap.put("RAKO", "6722 Szeged, Rákóczi tér 1.");
-        officeMap.put("KERE", "6728 Szeged, Kereskedő köz 5/A-B.");
-        officeMap.put("SZOR", "6726 Szeged, Szőregi út 80.");
-        return officeMap;
-    }
-
-    @NonNull
-    static LinkedHashMap<String, String> getStringServiceHashMap() {
-        LinkedHashMap<String, String> serviceMap = new LinkedHashMap<>();
-        serviceMap.put("DIGA", "Állampolgárság");
-        serviceMap.put("GEPJ", "Gépjármű");
-        serviceMap.put("SZIG", "Igazolvány");
-        serviceMap.put("UTLE", "Úlevél");
-        serviceMap.put("UREG", "Ügyfélkapu");
-        serviceMap.put("VEZE", "Vezetői engedély");
-        serviceMap.put("EGYE", "Egyéb");
-        return serviceMap;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,51 +50,37 @@ public class BookingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_booking);
 
         // Office select
-        LinkedHashMap<String, String> officeMap = getStringOfficeHashMap();
+        List<Office> officeList = DataProvider.getOfficeList();
+        ArrayAdapter<Office> officeAdapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_dropdown_item, officeList);
         Spinner officeSpinner = findViewById(R.id.officeSpinner);
+        officeSpinner.setAdapter(officeAdapter);
         officeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                officeSelectedName = parent.getItemAtPosition(position).toString();
-                for (Map.Entry<String, String> entry : officeMap.entrySet()) {
-                    if (entry.getValue().equals(officeSelectedName)) {
-                        officeSelectedKey = entry.getKey();
-                        break;
-                    }
-                }
+                selectedOffice = officeList.get(position);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
-        ArrayList<String> officeNames = new ArrayList<>(officeMap.values());
-        ArrayAdapter<String> adapterOffice = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_dropdown_item, officeNames);
-        officeSpinner.setAdapter(adapterOffice);
 
 
         // Service select
-        LinkedHashMap<String, String> serviceMap = getStringServiceHashMap();
+        List<Service> serviceList = DataProvider.getServiceList();
+        ArrayAdapter<Service> serviceAdapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_dropdown_item, serviceList);
         Spinner serviceSpinner = findViewById(R.id.serviceSpinner);
+        serviceSpinner.setAdapter(serviceAdapter);
         serviceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                serviceSelectedName = parent.getItemAtPosition(position).toString();
-                for (Map.Entry<String, String> entry : serviceMap.entrySet()) {
-                    if (entry.getValue().equals(serviceSelectedName)) {
-                        serviceSelectedKey = entry.getKey();
-                        break;
-                    }
-                }
+                selectedService = serviceList.get(position);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
-        ArrayList<String> serviceNames = new ArrayList<>(serviceMap.values());
-        ArrayAdapter<String> adapterService = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_dropdown_item, serviceNames);
-        serviceSpinner.setAdapter(adapterService);
 
         // Date input
         dateInput = findViewById(R.id.dateInput);
@@ -240,10 +209,8 @@ public class BookingActivity extends AppCompatActivity {
         }
 
         Intent intent = new Intent(this, BookingTimeActivity.class);
-        intent.putExtra("officeSelectedName", officeSelectedName);
-        intent.putExtra("officeSelectedKey", officeSelectedKey);
-        intent.putExtra("serviceSelectedName", serviceSelectedName);
-        intent.putExtra("serviceSelectedKey", serviceSelectedKey);
+        intent.putExtra("selectedOffice", selectedOffice);
+        intent.putExtra("selectedService", selectedService);
         intent.putExtra("dateSelected", dateSelected);
         startActivity(intent);
     }
@@ -268,7 +235,9 @@ public class BookingActivity extends AppCompatActivity {
     }
 
     public void openOfficeMap(View view) {
-        if (officeSelectedName == null || officeSelectedName.isEmpty()) {
+        if (selectedOffice == null ||
+                selectedOffice.name == null ||
+                selectedOffice.name.isEmpty()) {
             Toast.makeText(this,
                     "Előbb válassz egy hivatalt!", Toast.LENGTH_SHORT).show();
             return;
@@ -276,12 +245,45 @@ public class BookingActivity extends AppCompatActivity {
 
         try {
             Uri uri = Uri.parse("https://www.google.com/maps/search/?api=1&query=" +
-                    Uri.encode(officeSelectedName));
+                    Uri.encode(selectedOffice.name));
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(mapIntent);
         } catch (Exception e) {
             Toast.makeText(this, "Nem sikerült megnyitni a térképet: " +
                     e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void callOffice(View view) {
+        if (selectedOffice == null || selectedOffice.phone == null) {
+            Toast.makeText(this, "Nincs telefonszám!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL_PERMISSION);
+        } else {
+            startCall();
+        }
+    }
+
+    private void startCall() {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + selectedOffice.phone));
+        startActivity(intent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CALL_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startCall();
+            } else {
+                Toast.makeText(this, "Hívási engedély megtagadva!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
