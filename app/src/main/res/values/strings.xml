@@ -44,6 +44,7 @@
     <string name="new_password">Új jelszó</string>
     <string name="new_password_confirm">Új jelszó megerősítése</string>
     <string name="no_previous_bookings">Nincs korábbi foglalás.</string>
-    <string name="no_reservation">Nincs korábbi foglalás.</string>
+    <string name="no_reservation">Még nem volt időpontfoglalása!</string>
     <string name="reservation_delete">kerettel rendelkező foglalás törölhető!</string>
+    <string name="app_label">SZKH Időpont</string>
 </resources>

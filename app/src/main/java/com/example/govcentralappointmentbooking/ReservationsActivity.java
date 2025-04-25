@@ -3,8 +3,10 @@ package com.example.govcentralappointmentbooking;
 import static android.view.View.VISIBLE;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
@@ -190,10 +192,20 @@ public class ReservationsActivity extends AppCompatActivity {
                     }
 
                     if (querySnapshots.isEmpty()) {
+
                         TextView tv = new TextView(this);
+
                         tv.setText(R.string.no_reservation);
-                        tv.setTextSize(16);
-                        tv.setPadding(20, 20, 20, 20);
+                        tv.setTextSize(18);
+                        tv.setGravity(Gravity.CENTER);
+                        tv.setTypeface(null, Typeface.BOLD);
+
+                        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+                        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
+                        params.width = GridLayout.LayoutParams.MATCH_PARENT;
+                        params.setMargins(0, 50, 0, 50);
+                        tv.setLayoutParams(params);
+
                         reservationsTableGrid.addView(tv);
                     }
 
