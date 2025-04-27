@@ -1,6 +1,5 @@
 package com.example.govcentralappointmentbooking;
 
-import static android.view.View.VISIBLE;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.graphics.Typeface;
@@ -39,6 +38,7 @@ public class ReservationsActivity extends AppCompatActivity {
 
     private GridLayout reservationsTableGrid;
     private TextView userNameText;
+    private LinearLayout infoTextLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,7 @@ public class ReservationsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reservations);
 
         reservationsTableGrid = findViewById(R.id.reservationsTableGrid);
+        infoTextLayout = findViewById(R.id.information);
         userNameText = findViewById(R.id.userName);
 
         loadUserReservations();
@@ -124,6 +125,7 @@ public class ReservationsActivity extends AppCompatActivity {
                 .addOnSuccessListener(querySnapshots -> {
 
                     reservationsTableGrid.removeAllViews();
+                    infoTextLayout.setVisibility(View.GONE);
                     userNameText.setText(Util.userName);
 
                     Map<String, String> officeMap = new HashMap<>();
@@ -210,8 +212,7 @@ public class ReservationsActivity extends AppCompatActivity {
                     }
 
                     if (canBeDeleted) {
-                        LinearLayout info = findViewById(R.id.information);
-                        info.setVisibility(VISIBLE);
+                        infoTextLayout.setVisibility(View.VISIBLE);
                     }
                 })
                 .addOnFailureListener(e ->

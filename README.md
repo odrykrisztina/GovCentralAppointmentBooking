@@ -48,4 +48,3 @@ Responzív felhasználói felületen támogatja a kormányablakok közötti fogl
 3. Egységes animációk (fade, slide, scale)
 4. Activity-váltás, visszalépés animációval
 
-**Készítette:** Ódry Krisztina
