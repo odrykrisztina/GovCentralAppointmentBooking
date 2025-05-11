@@ -47,5 +47,3 @@ Responzív felhasználói felületen támogatja a kormányablakok közötti fogl
 2. Dinamikus, strukturált időponttáblázat
 3. Egységes animációk (fade, slide, scale)
 4. Activity-váltás, visszalépés animációval
-
-Krisztikém szeretlek!!!!  :-)
